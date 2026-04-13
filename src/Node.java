@@ -6,8 +6,8 @@ public abstract class Node {
     private Constants.Type type;
     private double value;
     private Constants.NodeType nodeType;
-    private Field parentField;
-    public boolean wasMouseListenerSet = false;
+    private transient Field parentField;
+    public transient boolean wasMouseListenerSet = false;
 
     Node(Constants.Precedence precedence, Constants.Type type, Constants.NodeType nodeType, Field parentField) {
         this.precedence = precedence;
@@ -16,7 +16,7 @@ public abstract class Node {
         this.parentField = parentField;
     }
 
-    public void SetMouseListener() {
+    public void setMouseListener() {
         wasMouseListenerSet = true;
     }
 
@@ -47,8 +47,11 @@ public abstract class Node {
     public Field getParentField() {
         return parentField;
     }
+    public void setParentField(Field parentField) {
+        this.parentField = parentField;
+    }
 
-    public abstract javafx.scene.Node render(Field currentField, int position, boolean renderSmaller);
+    public abstract javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula);
 
     public boolean hasRightNode() {
         int currentIndex = parentField.getIndexOf(this);

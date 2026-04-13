@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class Field {
     private ArrayList<Node> content;
-    Node parent;
+    transient Node parent;
 
     Field(Node... nodes) {
         parent = null;

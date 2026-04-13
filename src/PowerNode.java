@@ -10,7 +10,7 @@ public class PowerNode extends ExponentSpecialNode {
     }
 
     @Override
-    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller) {
+    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula) {
         HBox fullRenderNode = new HBox(2);
         fullRenderNode.setAlignment(javafx.geometry.Pos.CENTER);
         fullRenderNode.setMinWidth(Region.USE_PREF_SIZE);
@@ -21,7 +21,11 @@ public class PowerNode extends ExponentSpecialNode {
         for (Node node : getChildField().getContent()) {
             if (node == null) continue;
             if (getChildField().equals(currentField) && getChildField().getIndexOf(node) == position) firstNode.getChildren().add(drawCursor());
-            firstNode.getChildren().add(node.render(currentField, position, true));
+            javafx.scene.Node javaFXNode = node.render(currentField, position, renderSmaller, controlFormula);
+            firstNode.getChildren().add(javaFXNode);
+            if (node.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
+                controlFormula.setCursorPosition(node);
+            });
         }
         firstNode.setAlignment(Pos.CENTER);
         firstNode.setMinWidth(Region.USE_PREF_SIZE);

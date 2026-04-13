@@ -10,7 +10,7 @@ public class ClosingBracketNode extends Node {
     }
 
     @Override
-    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller) {
+    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula) {
         HBox node = new HBox();
         node.setAlignment(Pos.CENTER);
         Text text = new Text(")");

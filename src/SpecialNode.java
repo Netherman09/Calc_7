@@ -19,5 +19,5 @@ public abstract class SpecialNode extends Node{
         return childFields[1];
     }
 
-    public abstract javafx.scene.Node render(Field currentField, int position, boolean renderSmaller);
+    public abstract javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula);
 }

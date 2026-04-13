@@ -10,7 +10,7 @@ public class SineNode extends SingleSpecialNode {
     }
 
     @Override
-    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller) {
+    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula) {
         HBox node = new HBox();
         node.setAlignment(Pos.CENTER);
         Text text = new Text("sin(");
@@ -21,7 +21,11 @@ public class SineNode extends SingleSpecialNode {
         for (Node child : getChildField().getContent()) {
             if (child == null) continue;
             if (getChildField().equals(currentField) && getChildField().getIndexOf(child) == position) childNode.getChildren().add(drawCursor());
-            childNode.getChildren().add(child.render(currentField, position, renderSmaller));
+            javafx.scene.Node javaFXNode = child.render(currentField, position, renderSmaller, controlFormula);
+            childNode.getChildren().add(javaFXNode);
+            if (child.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
+                controlFormula.setCursorPosition(child);
+            });
         }
         childNode.setAlignment(Pos.CENTER);
         childNode.setMinWidth(Region.USE_PREF_SIZE);

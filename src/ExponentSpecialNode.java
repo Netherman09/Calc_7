@@ -16,5 +16,5 @@ public abstract class ExponentSpecialNode extends Node {
         return valueField;
     }
 
-    public abstract javafx.scene.Node render(Field currentField, int position, boolean renderSmaller);
+    public abstract javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula);
 }

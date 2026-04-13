@@ -18,7 +18,7 @@
 .standard_button {
     -fx-background-radius: 11;
     -fx-text-fill: rgb(255, 255, 255);
-    -fx-font-size: 15.3px;
+    -fx-font-size: 19px;
     -fx-font-weight: bold;
     -fx-border-width: 0;
 }

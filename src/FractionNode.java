@@ -10,7 +10,7 @@ public class FractionNode extends SpecialNode{
     }
 
     @Override
-    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller) {
+    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula) {
         HBox fullRenderNode = new HBox(2);
         VBox renderNode = new VBox(2);
         renderNode.setAlignment(javafx.geometry.Pos.CENTER);
@@ -25,7 +25,11 @@ public class FractionNode extends SpecialNode{
         for (Node node : getFirstChild().getContent()) {
             if (node == null) continue;
             if (getFirstChild().equals(currentField) && getFirstChild().getIndexOf(node) == position) firstNode.getChildren().add(drawCursor());
-            firstNode.getChildren().add(node.render(currentField, position, renderSmaller));
+            javafx.scene.Node javaFXNode = node.render(currentField, position, renderSmaller, controlFormula);
+            firstNode.getChildren().add(javaFXNode);
+            if (node.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
+                controlFormula.setCursorPosition(node);
+            });
         }
         firstNode.setAlignment(Pos.CENTER);
         firstNode.setMinWidth(Region.USE_PREF_SIZE);
@@ -34,7 +38,11 @@ public class FractionNode extends SpecialNode{
         for (Node node : getSecondChild().getContent()) {
             if (node == null) continue;
             if (getSecondChild().equals(currentField) && getSecondChild().getIndexOf(node) == position) secondNode.getChildren().add(drawCursor());
-            secondNode.getChildren().add(node.render(currentField, position, renderSmaller));
+            javafx.scene.Node javaFXNode = node.render(currentField, position, renderSmaller, controlFormula);
+            secondNode.getChildren().add(javaFXNode);
+            if (node.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
+                controlFormula.setCursorPosition(node);
+            });
         }
         secondNode.setAlignment(Pos.CENTER);
         secondNode.setMinWidth(Region.USE_PREF_SIZE);

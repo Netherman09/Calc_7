@@ -194,13 +194,16 @@ public class ControlFormula {
     }
 
     public void setCursorPosition(Node clickedNode) {
+        System.out.println("Set Cursor Position");
         currentField = clickedNode.getParentField();
         cursorPosition = clickedNode.getParentField().getIndexOf(clickedNode) + 1; // +1 damit man vor der Node ist auf die man Klickt
         renderAll();
     }
 
     public void calculate() {
-        lastEquation = startField;
+        CopyUtility copyUtility = new CopyUtility();
+        lastEquation = copyUtility.deepCopy(startField);
+        reconnectParentFields(lastEquation);
         cleanAll(startField);
 
         Equation equation = new Equation();
@@ -216,6 +219,32 @@ public class ControlFormula {
 
         mainWindow.renderResult(textToShow);
         startField = lastEquation;
+        currentField = startField;
+    }
+
+    private void reconnectParentFields(Field field) {
+        for (int i = 0; i < field.getLength(); i++) {
+            field.getNode(i).setParentField(field);
+
+            if (field.getNode(i).getNodeType() == Constants.NodeType.Special) {
+                SpecialNode specialNode = (SpecialNode) field.getNode(i);
+                specialNode.getFirstChild().setParent(field.getNode(i));
+                specialNode.getSecondChild().setParent(field.getNode(i));
+                reconnectParentFields(specialNode.getFirstChild());
+                reconnectParentFields(specialNode.getSecondChild());
+            }
+            else if (field.getNode(i).getNodeType() == Constants.NodeType.ExponentSpecial) {
+                ExponentSpecialNode specialNode = (ExponentSpecialNode) field.getNode(i);
+                specialNode.getChildField().setParent(field.getNode(i));
+                specialNode.getValueField().setParent(field.getNode(i));
+                reconnectParentFields(specialNode.getChildField());
+                reconnectParentFields(specialNode.getValueField());
+            } else if (field.getNode(i).getNodeType() == Constants.NodeType.SingleSpecial) {
+                SingleSpecialNode specialNode = (SingleSpecialNode) field.getNode(i);
+                specialNode.getChildField().setParent(field.getNode(i));
+                reconnectParentFields(specialNode.getChildField());
+            }
+        }
     }
 
     private void cleanAll(Field field) {
@@ -244,7 +273,7 @@ public class ControlFormula {
         HBox renderNode = new HBox();
         renderNode.setAlignment(Pos.CENTER);
         for (int i = 0; i < startField.getLength(); i++) {
-            javafx.scene.Node node = startField.getNode(i).render(currentField, cursorPosition, false);
+            javafx.scene.Node node = startField.getNode(i).render(currentField, cursorPosition, false, this);
             Node currentNode = startField.getNode(i);
             if (currentNode.getNodeType() == Constants.NodeType.Normal) node.setOnMouseClicked(e -> {
                setCursorPosition(currentNode);

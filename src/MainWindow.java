@@ -88,15 +88,15 @@ public class MainWindow extends Application {
         sineButton = createNewButton("sin", STYLE.Gray);
         cosineButton = createNewButton("cos", STYLE.Gray);
         tangentButton = createNewButton("tan", STYLE.Gray);
-        logButton = createNewButton("log", STYLE.Gray);
-        lnButton = createNewButton("ln", STYLE.Gray);
-        var1Button = createNewButton("Var 1", STYLE.Gray);
-        var2Button = createNewButton("Var 2", STYLE.Gray);
-        var3Button = createNewButton("Var 3", STYLE.Gray);
+        logButton = createNewButton("", STYLE.Gray); // Text: log
+        lnButton = createNewButton("", STYLE.Gray); // Text: ln
+        var1Button = createNewButton("", STYLE.Gray); // Text: Var 1
+        var2Button = createNewButton("", STYLE.Gray); // Text: Var 2
+        var3Button = createNewButton("", STYLE.Gray); // Text: Var 3
 
-        constButton = createNewButton("CONST", STYLE.Gray);
+        constButton = createNewButton("", STYLE.Gray); // Text: CONST
 
-        expButton = createNewButton("EXP", STYLE.LightGray);
+        expButton = createNewButton("", STYLE.LightGray); // Text: EXP
 
         piButton = createNewButton("\uD835\uDF45", STYLE.Gray);
         eButton = createNewButton("e", STYLE.Gray);

@@ -17,7 +17,7 @@ public class RootNode extends SpecialNode{
         super(Constants.Precedence.Points, Constants.Type.Root, parentField);
     }
 
-    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller) {
+    public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula) {
         HBox fullRenderNode = new HBox();
         fullRenderNode.setAlignment(Pos.TOP_LEFT);
         fullRenderNode.setMinWidth(Region.USE_PREF_SIZE);
@@ -31,7 +31,11 @@ public class RootNode extends SpecialNode{
             if (getFirstChild().equals(currentField) && getFirstChild().getIndexOf(node) == position) {
                 firstNode.getChildren().add(drawCursor());
             }
-            firstNode.getChildren().add(node.render(currentField, position, true));
+            javafx.scene.Node javaFXNode = node.render(currentField, position, renderSmaller, controlFormula);
+            firstNode.getChildren().add(javaFXNode);
+            if (node.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
+                controlFormula.setCursorPosition(node);
+            });
         }
         firstNode.setAlignment(Pos.BOTTOM_CENTER);
         firstNode.setMinWidth(Region.USE_PREF_SIZE);
@@ -43,7 +47,11 @@ public class RootNode extends SpecialNode{
             if (getSecondChild().equals(currentField) && getSecondChild().getIndexOf(node) == position) {
                 secondNode.getChildren().add(drawCursor());
             }
-            secondNode.getChildren().add(node.render(currentField, position, renderSmaller));
+            javafx.scene.Node javaFXNode = node.render(currentField, position, renderSmaller, controlFormula);
+            secondNode.getChildren().add(javaFXNode);
+            if (node.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
+                controlFormula.setCursorPosition(node);
+            });
         }
         // 2. Radikand (Inhalt unter der Wurzel) rendern
         secondNode.setAlignment(Pos.CENTER);
