@@ -1,6 +1,5 @@
 .window_background {
     -fx-background-color: rgb(25, 25, 25);
-    -fx-background-radius: 15;
     -fx-padding: 10 10 10 10;
     -fx-border-color: rgb(70, 70, 70);
     -fx-border-width: 0.5;
@@ -8,10 +7,12 @@
 }
 
 .window_all_border {
+    -fx-background-radius: 15;
     -fx-border-radius: 15;
 }
 
 .window_partly_border {
+    -fx-background-radius: 15 0 15 15;
     -fx-border-radius: 15 0 15 15;
 }
 
