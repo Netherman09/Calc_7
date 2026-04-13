@@ -7,6 +7,7 @@ public class ControlFormula {
     int cursorPosition;
     //RootNode startRootNode;
     MainWindow mainWindow;
+    Field lastEquation;
 
     ControlFormula(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -192,7 +193,14 @@ public class ControlFormula {
         renderAll();
     }
 
+    public void setCursorPosition(Node clickedNode) {
+        currentField = clickedNode.getParentField();
+        cursorPosition = clickedNode.getParentField().getIndexOf(clickedNode) + 1; // +1 damit man vor der Node ist auf die man Klickt
+        renderAll();
+    }
+
     public void calculate() {
+        lastEquation = startField;
         cleanAll(startField);
 
         Equation equation = new Equation();
@@ -207,6 +215,7 @@ public class ControlFormula {
         }
 
         mainWindow.renderResult(textToShow);
+        startField = lastEquation;
     }
 
     private void cleanAll(Field field) {
@@ -235,7 +244,12 @@ public class ControlFormula {
         HBox renderNode = new HBox();
         renderNode.setAlignment(Pos.CENTER);
         for (int i = 0; i < startField.getLength(); i++) {
-            renderNode.getChildren().add(startField.getNode(i).render(currentField, cursorPosition, false));
+            javafx.scene.Node node = startField.getNode(i).render(currentField, cursorPosition, false);
+            Node currentNode = startField.getNode(i);
+            if (currentNode.getNodeType() == Constants.NodeType.Normal) node.setOnMouseClicked(e -> {
+               setCursorPosition(currentNode);
+            });
+            renderNode.getChildren().add(node);
         }
         mainWindow.render(renderNode);
     }

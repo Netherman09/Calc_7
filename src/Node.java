@@ -7,12 +7,21 @@ public abstract class Node {
     private double value;
     private Constants.NodeType nodeType;
     private Field parentField;
+    public boolean wasMouseListenerSet = false;
 
     Node(Constants.Precedence precedence, Constants.Type type, Constants.NodeType nodeType, Field parentField) {
         this.precedence = precedence;
         this.type = type;
         this.nodeType = nodeType;
         this.parentField = parentField;
+    }
+
+    public void SetMouseListener() {
+        wasMouseListenerSet = true;
+    }
+
+    public boolean getWasMouseListenerSet() {
+        return wasMouseListenerSet;
     }
 
     public Constants.Precedence getPrecedence() {
