@@ -1,0 +1,132 @@
+.window_background {
+    -fx-background-color: rgb(25, 25, 25);
+    -fx-background-radius: 15;
+    -fx-padding: 10 10 10 10;
+    -fx-border-color: rgb(70, 70, 70);
+    -fx-border-width: 0.5;
+
+}
+
+.window_all_border {
+    -fx-border-radius: 15;
+}
+
+.window_partly_border {
+    -fx-border-radius: 15 0 15 15;
+}
+
+.standard_button {
+    -fx-background-radius: 11;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 15.3px;
+    -fx-font-weight: bold;
+    -fx-border-width: 0;
+}
+
+.button_gray {
+    -fx-background-color: rgb(40, 40, 40);
+}
+
+.button_orange {
+    -fx-background-color: rgb(255, 149, 0);
+}
+
+.button_orange_text {
+    -fx-background-color: rgb(40, 40, 40);
+    -fx-text-fill: rgb(255, 149, 0);
+}
+
+.button_lightgray {
+    -fx-background-color: rgb(60, 60, 60);
+}
+
+.button_red_text {
+    -fx-background-color: rgb(40, 40, 40);
+    -fx-text-fill: rgb(240, 60, 60);
+}
+
+.calculation_field {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-background-radius: 9;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-border-color: rgb(80, 80, 80);
+    -fx-border-width: 0.4;
+    -fx-border-radius:9;
+}
+
+.calculation_text {
+    -fx-fill: white;
+        -fx-font-size: 26px;
+        -fx-font-weight: 600;
+}
+
+.calculation_result {
+    -fx-fill: white;
+        -fx-font-size: 32px;
+        -fx-font-weight: bold;
+}
+
+.context_menu {
+    -fx-background-color: rgb(240, 70, 70);
+    -fx-background-radius: 11 11 0 0;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-border-color: rgb(70, 70, 70);
+    -fx-border-width: 0.5;
+    -fx-border-radius: 11 11 0 0;
+}
+
+/* Nutze konsequent deinen Namen: .context_menu */
+.context_menu {
+    -fx-background-color: rgb(240, 70, 70);
+    -fx-background-radius: 11 11 0 0;
+    -fx-border-color: rgb(70, 70, 70);
+    -fx-border-width: 0.5;
+    -fx-border-radius: 11 11 0 0;
+    -fx-padding: 0; /* Verhindert unnötigen Platz am Rand */
+}
+
+/* 1. Den linken Platzhalter für Icons entfernen */
+.context_menu .menu-item .left-container {
+    -fx-padding: 0;
+    -fx-shape: null;
+    -fx-pref-width: 0;
+}
+
+/* 2. Das Label über die volle Breite zentrieren */
+.context_menu .menu-item .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-background-radius: 11 11 0 0;
+    -fx-font-weight: bold;
+    -fx-alignment: center;         /* Zentriert den Textinhalt im Label */
+    -fx-max-width: 500;         /* JavaFX-Trick für "Infinity" */
+    -fx-text-alignment: center;
+    -fx-padding: 0 5 0 5;
+}
+
+/* Hover-Effekt ohne den blauen Standard-Hintergrund */
+.context_menu .menu-item:focused,
+.context_menu .menu-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1); /* Leichtes Aufhellen */
+    -fx-background-radius: 11 11 0 0;
+}
+
+.exit_button {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: rgb(180, 180, 180);
+}
+
+.timer_label {
+    -fx-fill: rgb(255, 255, 255);
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.timer_unit_label {
+    -fx-fill: rgb(140, 140, 140);
+    -fx-font-size: 18px;
+}
