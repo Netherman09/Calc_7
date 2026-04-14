@@ -100,7 +100,7 @@ public class Equation {
         return outputField;
     }
 
-    // Ersetzt die ConstantsNodes durch Value Nodes mit dem Wert der vorherigen ConstantsNode
+    // Ersetzt die ConstantsNodes durch Value Nodes mit dem Wert der vorherigen ConstantsNode (Gleiches gilt für VarNodes)
     private Field replaceConstantsNodes(Field rootfield) {
         ArrayList<Node> newFieldNodes = new ArrayList<>();
         for (int i = 0; i < rootfield.getLength(); i++) {
@@ -112,6 +112,7 @@ public class Equation {
                 double value = 0;
                 System.out.println("VARNODE:" + varNode.getValue());
                 if (varNode.getVarType() == Constants.VarType.Ans) value = Constants.lastResult;
+                if (varNode.getVarType() == Constants.VarType.CustomVar) value = Constants.customResult;
                 Node valueNode = new ValueNode(value ,rootfield.getNode(i).getParentField());
                 newFieldNodes.add(valueNode);
             } else {

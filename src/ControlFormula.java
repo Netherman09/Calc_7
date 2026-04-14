@@ -8,6 +8,8 @@ public class ControlFormula {
     //RootNode startRootNode;
     MainWindow mainWindow;
     Field lastEquation;
+    boolean showsResult = false;
+    double currentResult;
 
     ControlFormula(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -87,6 +89,11 @@ public class ControlFormula {
         incrementCursorPosition();
 
         renderAll();
+    }
+
+    public void storeCustomVar(String symbol, Constants.VarType varType) {
+        if (showsResult) Constants.customResult = currentResult;
+        else addVariable(symbol, varType);
     }
 
     private void incrementCursorPosition() {
@@ -218,6 +225,8 @@ public class ControlFormula {
         mainWindow.clearAll();
         renderAll();
 
+
+
         Equation equation = new Equation();
         System.out.println("--------Equation Start--------");
         double result = equation.calculate(startField);
@@ -228,6 +237,9 @@ public class ControlFormula {
         } else {
             textToShow = String.valueOf(result);      // Zeigt "5.5"
         }
+
+        showsResult = true;
+        currentResult = result;
 
         mainWindow.renderResult(textToShow);
         startField = lastEquation;
@@ -283,6 +295,7 @@ public class ControlFormula {
     }
 
     private void renderAll() {
+        showsResult = false;
         System.out.println("Render: " + cursorPosition);
         HBox renderNode = new HBox();
         renderNode.setAlignment(Pos.CENTER);

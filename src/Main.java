@@ -7,11 +7,12 @@ public class Main {
 
 
         // Weitere Ideen:
-        // - Cache bzw ein paar (z.b. drei) Buttons, die das ergebnis in eine Variable speichern damit man es später wieder verwenden kann (So ein bisschen wie eine Ans funktion)
-        // - Touchscreen support damit man nicht immer die Pfeiltasten nutzen muss sondern einfach dahin klickt wo man hinwill
         // - Verlauf aller Rechnungen bisher wo man aber auch alte Rechnungen wieder laden kann damit man sie verändern kann
         // - Wenn man die öffnende Klammer setzt, wird die schließende auch gleich gesetzt und der Cursor zwischen die beiden Klammern gepackt
         // - Konstanten Panel (Ein Panel wo alle wichtigen Konstanten drin stehen, die man dann wie eine Variable nutzen kann direkt (z.b. Pi, Gravitationskonstante g, Eulersche Zahl e))
+        // - Die Möglichkeit einfach Zehnerpotenzen einzugeben
         // - vllt. Bracket Matching (Die Klammer die zu einer anderen gehört wird farblich hervorgehoben)
+
+        // Weitere Operatoren: Binomialkoeffizient, Arcsinus, -cosinus und -tangens, logarithmus & ln
     }
 }

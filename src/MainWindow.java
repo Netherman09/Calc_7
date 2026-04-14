@@ -90,7 +90,7 @@ public class MainWindow extends Application {
         tangentButton = createNewButton("tan", STYLE.Gray);
         logButton = createNewButton("", STYLE.Gray); // Text: log
         lnButton = createNewButton("", STYLE.Gray); // Text: ln
-        varButton = createNewButton("", STYLE.Gray); // Text: Var 1
+        varButton = createNewButton("Var", STYLE.Gray); // Text: Var 1
         ansButton = createNewButton("Ans", STYLE.Gray); // Text: Var 2
 
         constButton = createNewButton("", STYLE.Gray); // Text: CONST

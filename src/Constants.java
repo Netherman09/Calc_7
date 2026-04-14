@@ -41,4 +41,5 @@ public class Constants {
     }
 
     public static double lastResult = 0; // Result of the last Evaluation for the Ans Function
+    public static double customResult = 0; // Stores the Result of Var
 }
