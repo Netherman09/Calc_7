@@ -107,6 +107,13 @@ public class Equation {
             if (rootfield.getNode(i).getType() == Constants.Type.Constant) {
                 Node valueNode = new ValueNode(rootfield.getNode(i).getValue() ,rootfield.getNode(i).getParentField());
                 newFieldNodes.add(valueNode);
+            } else if (rootfield.getNode(i).getType() == Constants.Type.Var) {
+                VarNode varNode = (VarNode)rootfield.getNode(i);
+                double value = 0;
+                System.out.println("VARNODE:" + varNode.getValue());
+                if (varNode.getVarType() == Constants.VarType.Ans) value = Constants.lastResult;
+                Node valueNode = new ValueNode(value ,rootfield.getNode(i).getParentField());
+                newFieldNodes.add(valueNode);
             } else {
                 newFieldNodes.add(rootfield.getNode(i));
             }

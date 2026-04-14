@@ -81,6 +81,14 @@ public class ControlFormula {
         renderAll();
     }
 
+    public void addVariable(String symbol, Constants.VarType varType) {
+        VarNode varNode = new VarNode(symbol, varType, currentField);
+        currentField.add(varNode, cursorPosition);
+        incrementCursorPosition();
+
+        renderAll();
+    }
+
     private void incrementCursorPosition() {
         cursorPosition++;
     }
@@ -206,6 +214,10 @@ public class ControlFormula {
         reconnectParentFields(lastEquation);
         cleanAll(startField);
 
+        currentField = startField;
+        mainWindow.clearAll();
+        renderAll();
+
         Equation equation = new Equation();
         System.out.println("--------Equation Start--------");
         double result = equation.calculate(startField);
@@ -220,6 +232,8 @@ public class ControlFormula {
         mainWindow.renderResult(textToShow);
         startField = lastEquation;
         currentField = startField;
+        System.out.println("RESULT: " + result);
+        Constants.lastResult = result;
     }
 
     private void reconnectParentFields(Field field) {

@@ -24,7 +24,8 @@ public class Constants {
         Constant,
         Sine,
         Cosine,
-        Tangent
+        Tangent,
+        Var
     }
 
     public enum NodeType {
@@ -33,4 +34,11 @@ public class Constants {
         ExponentSpecial,
         SingleSpecial
     }
+
+    public enum VarType {
+        Ans,
+        CustomVar
+    }
+
+    public static double lastResult = 0; // Result of the last Evaluation for the Ans Function
 }

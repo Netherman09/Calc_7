@@ -51,13 +51,13 @@ public class MainWindow extends Application {
     Button tangentButton;
     Button logButton;
     Button lnButton;
-    Button var1Button;
-    Button var2Button;
-    Button var3Button;
+    Button varButton;
+    Button ansButton;
     Button piButton;
     Button eButton;
     Button constButton;
     Button expButton;
+    Button tempButton; // Platzhalter
     HBox equationBox;
 
     @Override
@@ -90,11 +90,11 @@ public class MainWindow extends Application {
         tangentButton = createNewButton("tan", STYLE.Gray);
         logButton = createNewButton("", STYLE.Gray); // Text: log
         lnButton = createNewButton("", STYLE.Gray); // Text: ln
-        var1Button = createNewButton("", STYLE.Gray); // Text: Var 1
-        var2Button = createNewButton("", STYLE.Gray); // Text: Var 2
-        var3Button = createNewButton("", STYLE.Gray); // Text: Var 3
+        varButton = createNewButton("", STYLE.Gray); // Text: Var 1
+        ansButton = createNewButton("Ans", STYLE.Gray); // Text: Var 2
 
         constButton = createNewButton("", STYLE.Gray); // Text: CONST
+        tempButton = createNewButton("", STYLE.Gray); // Platzhalter
 
         expButton = createNewButton("", STYLE.LightGray); // Text: EXP
 
@@ -121,9 +121,9 @@ public class MainWindow extends Application {
         exponentButton = createNewButton("x^y", STYLE.Gray);
 
         GridPane buttonGrid = new GridPane(5, 5);
-        buttonGrid.addColumn(0, leftButton, sineButton, var1Button, sevenButton, fourButton, oneButton, zeroButton);
-        buttonGrid.addColumn(1, rightButton, cosineButton, var2Button, eightButton, fiveButton, twoButton, pointButton);
-        buttonGrid.addColumn(2, constButton, tangentButton, var3Button, nineButton, sixButton, threeButton, expButton);
+        buttonGrid.addColumn(0, leftButton, sineButton, varButton, sevenButton, fourButton, oneButton, zeroButton);
+        buttonGrid.addColumn(1, rightButton, cosineButton, ansButton, eightButton, fiveButton, twoButton, pointButton);
+        buttonGrid.addColumn(2, constButton, tangentButton, tempButton, nineButton, sixButton, threeButton, expButton);
         buttonGrid.addColumn(3, deleteButton, exponentButton, openingBracketButton, divisionButton, multiplicationButton, subtractButton, addButton);
         buttonGrid.addColumn(4, clearButton, rootButton, closingBracketButton, fractionButton, logButton, lnButton, calculateButton);
         buttonGrid.setPadding(new Insets(10, 0, 0, 0));

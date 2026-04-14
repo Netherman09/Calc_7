@@ -61,6 +61,8 @@ public class ControlButtons {
 
         mainWindow.calculateButton.setOnAction(event -> controlFormula.calculate());
 
+        mainWindow.ansButton.setOnAction(event -> controlFormula.addVariable("Ans", Constants.VarType.Ans));
+
         mainWindow.clearButton.setOnAction(event -> controlFormula.clearAll());
         mainWindow.deleteButton.setOnAction(event -> controlFormula.deleteCurrent());
 
