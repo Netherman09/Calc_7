@@ -3,17 +3,7 @@
     -fx-padding: 10 10 10 10;
     -fx-border-color: rgb(70, 70, 70);
     -fx-border-width: 0.5;
-
-}
-
-.window_all_border {
-    -fx-background-radius: 15;
-    -fx-border-radius: 15;
-}
-
-.window_partly_border {
-    -fx-background-radius: 15 0 15 15;
-    -fx-border-radius: 15 0 15 15;
+    -fx-border-radius: 12;
 }
 
 .standard_button {
@@ -30,6 +20,10 @@
 
 .button_orange {
     -fx-background-color: rgb(255, 149, 0);
+}
+
+.button_orange:hover {
+    -fx-background-color: rgb(255, 165, 10);
 }
 
 .button_orange_text {
@@ -69,25 +63,17 @@
         -fx-font-weight: bold;
 }
 
+/* Nutze konsequent deinen Namen: .context_menu */
 .context_menu {
     -fx-background-color: rgb(240, 70, 70);
-    -fx-background-radius: 11 11 0 0;
-    -fx-text-fill: rgb(255, 255, 255);
+    -fx-background-radius: 8;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-border-color: rgb(70, 70, 70);
     -fx-border-width: 0.5;
-    -fx-border-radius: 11 11 0 0;
-}
-
-/* Nutze konsequent deinen Namen: .context_menu */
-.context_menu {
-    -fx-background-color: rgb(240, 70, 70);
-    -fx-background-radius: 11 11 0 0;
-    -fx-border-color: rgb(70, 70, 70);
-    -fx-border-width: 0.5;
-    -fx-border-radius: 11 11 0 0;
+    -fx-border-radius: 8;
     -fx-padding: 0; /* Verhindert unnötigen Platz am Rand */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);
 }
 
 /* 1. Den linken Platzhalter für Icons entfernen */
@@ -101,7 +87,7 @@
 .context_menu .menu-item .label {
     -fx-text-fill: white;
     -fx-font-size: 15px;
-    -fx-background-radius: 11 11 0 0;
+    -fx-background-radius: 8;
     -fx-font-weight: bold;
     -fx-alignment: center;         /* Zentriert den Textinhalt im Label */
     -fx-max-width: 500;         /* JavaFX-Trick für "Infinity" */
@@ -113,7 +99,7 @@
 .context_menu .menu-item:focused,
 .context_menu .menu-item:hover {
     -fx-background-color: rgba(255, 255, 255, 0.1); /* Leichtes Aufhellen */
-    -fx-background-radius: 11 11 0 0;
+    -fx-background-radius: 8;
 }
 
 .exit_button {
@@ -130,4 +116,22 @@
 .timer_unit_label {
     -fx-fill: rgb(140, 140, 140);
     -fx-font-size: 18px;
+}
+
+.sliding_panel {
+    -fx-background-color: rgb(30, 30, 30);; /* Dunkler Hintergrund */
+    -fx-background-radius: 24 24 12 12; /* Oben abgerundet */
+    -fx-border-color: #444;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-radius: 24 24 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, -2);
+}
+
+.pull_handle {
+    -fx-background-color: #888;
+    -fx-background-radius: 5;
+}
+
+.pull_handle:hover {
+    -fx-background-color: #bbb;
 }

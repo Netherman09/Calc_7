@@ -22,6 +22,7 @@ public class CopyUtility {
                 .registerSubtype(TangentNode.class, "Tangent")
                 .registerSubtype(EmptyNode.class, "Empty")
                 .registerSubtype(VarNode.class, "Variable")
+                .registerSubtype(ConstantsNode.class, "Constant")
                 .registerSubtype(PointNode.class, "Point");
 
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapterFactory).create();

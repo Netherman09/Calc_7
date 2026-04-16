@@ -87,7 +87,7 @@ public class Equation {
     private Field placeMultiplicationNodes(Field rootfield) {
         ArrayList<Node> newFieldNodes = new ArrayList<>();
         for (int i = 0; i < rootfield.getLength(); i++) {
-            if (i != 0 && (rootfield.getNode(i).getNodeType() == Constants.NodeType.Special || rootfield.getNode(i).getType() == Constants.Type.Constant) && rootfield.getNode(i - 1).getType() == Constants.Type.Value) {
+            if (i != 0 && (rootfield.getNode(i).getNodeType() == Constants.NodeType.Special || rootfield.getNode(i).getType() == Constants.Type.Constant) && (rootfield.getNode(i - 1).getType() == Constants.Type.Value || rootfield.getNode(i - 1).getType() == Constants.Type.Constant || rootfield.getNode(i - 1).getNodeType() == Constants.NodeType.Special)) {
                 Node multiplicationNode = new MultiplicationNode(null);
                 newFieldNodes.add(multiplicationNode);
             }

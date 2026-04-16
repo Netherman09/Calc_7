@@ -1,5 +1,9 @@
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -8,17 +12,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class MainWindow extends Application {
 
     ContextMenu contextMenu;
     VBox mainLayout;
+    StackPane rootStack;
     Stage primaryStage;
 
     Button zeroButton;
@@ -129,39 +137,59 @@ public class MainWindow extends Application {
         buttonGrid.setPadding(new Insets(10, 0, 0, 0));
 
         contextMenu = new ContextMenu();
-        MenuItem closeItem = new MenuItem("✕");
-        closeItem.setOnAction(e -> Platform.exit());
+        MenuItem closeItem = new MenuItem("Exit");
+        closeItem.setOnAction(e -> closeWithStyle(primaryStage));
         contextMenu.getItems().add(closeItem);
         contextMenu.getStyleClass().add("context_menu");
 
         mainLayout = new VBox();
-        mainLayout.getStyleClass().add("window_background");
-        mainLayout.getStyleClass().add("window_all_border");
         mainLayout.getChildren().addAll(equationBox, buttonGrid);
 
-        Scene root = new Scene(mainLayout, Color.TRANSPARENT);
+        VBox slidingBox = createSlidingPanel();
+
+        rootStack = new StackPane(mainLayout, slidingBox);
+        rootStack.getStyleClass().add("window_background");
+
+        Scene root = new Scene(rootStack, Color.TRANSPARENT);
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         primaryStage.setScene(root);
-        primaryStage.setHeight(577);
+        primaryStage.setHeight(600);
         primaryStage.setWidth(397);
         primaryStage.setTitle("Timer");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.show();
 
+        // In der start-Methode, nachdem die Stage-Größe feststeht:
+        Platform.runLater(() -> {
+            Rectangle clip = new Rectangle();
+            clip.widthProperty().bind(rootStack.widthProperty());
+            clip.heightProperty().bind(rootStack.heightProperty());
+
+            // Diese Werte müssen exakt deinen abgerundeten Ecken im CSS entsprechen (z.B. 20px)
+            clip.setArcWidth(24);
+            clip.setArcHeight(24);
+
+            rootStack.setClip(clip);
+        });
+
         ControlButtons controlButtons = new ControlButtons(this, new ControlFormula(this));
     }
 
-    public void showContextMenu() {
-        contextMenu.show(mainLayout, Side.TOP, 358, 0);
-        mainLayout.getStyleClass().remove("window_all_border");
-        mainLayout.getStyleClass().add("window_partly_border");
+    public void closeWithStyle(Stage stage) {
+        FadeTransition ft = new FadeTransition(Duration.millis(200), stage.getScene().getRoot());
+        ft.setFromValue(1.0);
+        ft.setToValue(0.0);
+        ft.setOnFinished(e -> Platform.exit());
+        ft.play();
+    }
+
+    public void showContextMenu(double x, double y) {
+        contextMenu.show(rootStack, x, y);
     }
 
     public void hideContextMenu() {
         contextMenu.hide();
-        mainLayout.getStyleClass().add("window_all_border");
-        mainLayout.getStyleClass().remove("window_partly_border");
     }
 
     private Button createNewButton(String text, STYLE style) {
@@ -210,6 +238,102 @@ public class MainWindow extends Application {
     public void setPosition(double[] position) {
         primaryStage.setX(position[0]);
         primaryStage.setY(position[1]);
+    }
+
+    private double mouseAnchorY;
+    private double lastTranslateY;
+
+    private VBox createSlidingPanel() {
+        VBox panel = new VBox();
+        panel.getStyleClass().add("sliding_panel");
+        panel.setMaxHeight(350); // Maximale Höhe (ca. die Hälfte des Fensters)
+        panel.setPrefHeight(350);
+        panel.setPrefWidth(397);
+        panel.setMinWidth(397);
+
+        // 1. Der "Griff" (Die Linie zum Ziehen)
+        Region handle = new Region();
+        handle.setPrefSize(40, 5);
+        handle.setMaxSize(40, 5);
+        handle.getStyleClass().add("pull_handle");
+
+        HBox handleContainer = new HBox(handle);
+        handleContainer.setAlignment(Pos.CENTER);
+        handleContainer.setPadding(new Insets(10));
+        handleContainer.setCursor(javafx.scene.Cursor.HAND);
+
+        // Button Grid
+        GridPane buttonGrid = new GridPane(5, 5);
+        buttonGrid.setPadding(new Insets(10, 10, 0, 10));
+        buttonGrid.addColumn(0, piButton);
+        buttonGrid.addColumn(1, eButton);
+
+        panel.getChildren().addAll(handleContainer, buttonGrid);
+
+        double closedY = 450;
+        double openedY = 125;
+        panel.setTranslateY(closedY);
+
+        handleContainer.setOnMousePressed(e -> {
+            mouseAnchorY = e.getScreenY();
+            lastTranslateY = panel.getTranslateY();
+        });
+
+        handleContainer.setOnMouseDragged(e -> {
+            double deltaY = e.getScreenY() - mouseAnchorY;
+            double newTranslateY = lastTranslateY + deltaY;
+
+            // Begrenzung: Nicht höher als openedY und nicht tiefer als closedY
+            if (newTranslateY >= openedY && newTranslateY <= closedY) {
+                panel.setTranslateY(newTranslateY);
+            }
+        });
+
+        handleContainer.setOnMouseReleased(e -> {
+            double deltaY = e.getScreenY() - mouseAnchorY;
+            System.out.println(deltaY);
+            double currentY = panel.getTranslateY();
+            double targetY;
+
+            // Logik: Wenn mehr als 15% hochgezogen wurde, schnappt es ganz auf
+            if (deltaY < 0) {
+                targetY = openedY;
+            } else {
+                targetY = closedY;
+            }
+
+            // Die Animation erstellen
+            TranslateTransition transition = new TranslateTransition(Duration.millis(150), panel);
+            transition.setToY(targetY);
+
+            // Interpolator.EASE_BOTH sorgt für sanftes Beschleunigen und Abbremsen
+            transition.setInterpolator(Interpolator.EASE_BOTH);
+
+            transition.play();
+        });
+
+        handleContainer.setOnMouseClicked(e -> {
+            double deltaY = e.getScreenY() - mouseAnchorY;
+            System.out.println("Klick " + deltaY + " " + e.getScreenY() + " " + mouseAnchorY);
+            if (Math.abs(deltaY) > 10) return;
+            System.out.println("Klick");
+            double currentY = panel.getTranslateY();
+            double targetY = 450;
+
+            if (currentY == closedY) targetY = openedY;
+            if (currentY == openedY) targetY = closedY;
+
+            // Die Animation erstellen
+            TranslateTransition transition = new TranslateTransition(Duration.millis(150), panel);
+            transition.setToY(targetY);
+
+            // Interpolator.EASE_BOTH sorgt für sanftes Beschleunigen und Abbremsen
+            transition.setInterpolator(Interpolator.EASE_BOTH);
+
+            transition.play();
+        });
+
+        return panel;
     }
 
     enum STYLE {

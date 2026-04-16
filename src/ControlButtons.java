@@ -23,7 +23,7 @@ public class ControlButtons {
     private void initializeLogic() {
         mainWindow.mainLayout.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                mainWindow.showContextMenu();
+                mainWindow.showContextMenu(event.getScreenX(), event.getScreenY());
             }
 
             if (event.getClickCount() == 1) {
