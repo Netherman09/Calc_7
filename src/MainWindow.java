@@ -63,7 +63,7 @@ public class MainWindow extends Application {
     Button ansButton;
     Button piButton;
     Button eButton;
-    Button constButton;
+    Button historyButton;
     Button expButton;
     Button tempButton; // Platzhalter
     HBox equationBox;
@@ -101,7 +101,7 @@ public class MainWindow extends Application {
         varButton = createNewButton("Var", STYLE.Gray); // Text: Var 1
         ansButton = createNewButton("Ans", STYLE.Gray); // Text: Var 2
 
-        constButton = createNewButton("", STYLE.Gray); // Text: CONST
+        historyButton = createNewButton(">", STYLE.Gray); // Text: CONST
         tempButton = createNewButton("", STYLE.Gray); // Platzhalter
 
         expButton = createNewButton("", STYLE.LightGray); // Text: EXP
@@ -129,11 +129,11 @@ public class MainWindow extends Application {
         exponentButton = createNewButton("x^y", STYLE.Gray);
 
         GridPane buttonGrid = new GridPane(5, 5);
-        buttonGrid.addColumn(0, leftButton, sineButton, varButton, sevenButton, fourButton, oneButton, zeroButton);
-        buttonGrid.addColumn(1, rightButton, cosineButton, ansButton, eightButton, fiveButton, twoButton, pointButton);
-        buttonGrid.addColumn(2, constButton, tangentButton, tempButton, nineButton, sixButton, threeButton, expButton);
+        buttonGrid.addColumn(0, historyButton, sineButton, lnButton, sevenButton, fourButton, oneButton, zeroButton);
+        buttonGrid.addColumn(1, leftButton, cosineButton, logButton, eightButton, fiveButton, twoButton, pointButton);
+        buttonGrid.addColumn(2, rightButton, tangentButton, tempButton, nineButton, sixButton, threeButton, expButton);
         buttonGrid.addColumn(3, deleteButton, exponentButton, openingBracketButton, divisionButton, multiplicationButton, subtractButton, addButton);
-        buttonGrid.addColumn(4, clearButton, rootButton, closingBracketButton, fractionButton, logButton, lnButton, calculateButton);
+        buttonGrid.addColumn(4, clearButton, rootButton, closingBracketButton, fractionButton, varButton, ansButton, calculateButton);
         buttonGrid.setPadding(new Insets(10, 0, 0, 0));
 
         contextMenu = new ContextMenu();
@@ -172,8 +172,9 @@ public class MainWindow extends Application {
 
             rootStack.setClip(clip);
         });
-
-        ControlButtons controlButtons = new ControlButtons(this, new ControlFormula(this));
+        ControlFormula controlFormula = new ControlFormula(this);
+        ControlButtons controlButtons = new ControlButtons(this, controlFormula);
+        KeyController keyController = new KeyController(root, this, controlFormula);
     }
 
     public void closeWithStyle(Stage stage) {
