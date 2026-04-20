@@ -101,7 +101,7 @@ public class MainWindow extends Application {
         varButton = createNewButton("Var", STYLE.Gray); // Text: Var 1
         ansButton = createNewButton("Ans", STYLE.Gray); // Text: Var 2
 
-        historyButton = createNewButton(">", STYLE.Gray); // Text: CONST
+        historyButton = createNewButton("", STYLE.Gray); // Text: CONST
         tempButton = createNewButton("", STYLE.Gray); // Platzhalter
 
         expButton = createNewButton("", STYLE.LightGray); // Text: EXP
