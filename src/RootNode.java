@@ -29,9 +29,9 @@ public class RootNode extends SpecialNode{
         for (Node node : getFirstChild().getContent()) {
             if (node == null) continue;
             if (getFirstChild().equals(currentField) && getFirstChild().getIndexOf(node) == position) {
-                firstNode.getChildren().add(drawCursor());
+                //firstNode.getChildren().add(drawCursor());
             }
-            javafx.scene.Node javaFXNode = node.render(currentField, position, renderSmaller, controlFormula);
+            javafx.scene.Node javaFXNode = node.render(currentField, position, true, controlFormula);
             firstNode.getChildren().add(javaFXNode);
             if (node.getNodeType() == Constants.NodeType.Normal) javaFXNode.setOnMouseClicked(e -> {
                 controlFormula.setCursorPosition(node);
