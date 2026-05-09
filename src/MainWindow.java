@@ -65,7 +65,7 @@ public class MainWindow extends Application {
     Button eButton;
     Button historyButton;
     Button expButton;
-    Button tempButton; // Platzhalter
+    Button shiftButton;
     HBox equationBox;
 
     @Override
@@ -102,7 +102,7 @@ public class MainWindow extends Application {
         ansButton = createNewButton("Ans", STYLE.Gray); // Text: Var 2
 
         historyButton = createNewButton("", STYLE.Gray); // Text: CONST
-        tempButton = createNewButton("", STYLE.Gray); // Platzhalter
+        shiftButton = createNewButton("Shift", STYLE.Gray);
 
         expButton = createNewButton("", STYLE.LightGray); // Text: EXP
 
@@ -129,9 +129,9 @@ public class MainWindow extends Application {
         exponentButton = createNewButton("x^y", STYLE.Gray);
 
         GridPane buttonGrid = new GridPane(5, 5);
-        buttonGrid.addColumn(0, historyButton, sineButton, lnButton, sevenButton, fourButton, oneButton, zeroButton);
+        buttonGrid.addColumn(0, shiftButton, sineButton, lnButton, sevenButton, fourButton, oneButton, zeroButton);
         buttonGrid.addColumn(1, leftButton, cosineButton, logButton, eightButton, fiveButton, twoButton, pointButton);
-        buttonGrid.addColumn(2, rightButton, tangentButton, tempButton, nineButton, sixButton, threeButton, expButton);
+        buttonGrid.addColumn(2, rightButton, tangentButton, historyButton, nineButton, sixButton, threeButton, expButton);
         buttonGrid.addColumn(3, deleteButton, exponentButton, openingBracketButton, divisionButton, multiplicationButton, subtractButton, addButton);
         buttonGrid.addColumn(4, clearButton, rootButton, closingBracketButton, fractionButton, varButton, ansButton, calculateButton);
         buttonGrid.setPadding(new Insets(10, 0, 0, 0));

@@ -157,8 +157,11 @@ public class Equation {
                 double numInRadians = Math.toRadians(num);
                 System.out.println("SINGLE VALUE: " + value + " NUM1: " + num + " NUM2: " + numInRadians);
                 value = rootfield.getNode(i).getType() == Constants.Type.Sine ? Math.sin(numInRadians) : value; // Sinus
-                value = rootfield.getNode(i).getType() == Constants.Type.Cosine ? Math.cos(numInRadians) : value; // Sinus
-                value = rootfield.getNode(i).getType() == Constants.Type.Tangent ? Math.tan(numInRadians) : value; // Sinus
+                value = rootfield.getNode(i).getType() == Constants.Type.Cosine ? Math.cos(numInRadians) : value; // Kosinus
+                value = rootfield.getNode(i).getType() == Constants.Type.Tangent ? Math.tan(numInRadians) : value; // Tangens
+                value = rootfield.getNode(i).getType() == Constants.Type.ArcSine ? Math.toDegrees(Math.asin(num)) : value; // Arcsinus
+                value = rootfield.getNode(i).getType() == Constants.Type.ArcCosine ? Math.toDegrees(Math.acos(num)) : value; // Arccosinus
+                value = rootfield.getNode(i).getType() == Constants.Type.ArcTangent ? Math.toDegrees(Math.atan(num)) : value; // Arctangens
                 Node valueNode = new ValueNode(value, null);
                 newFieldNodes.add(valueNode);
             }

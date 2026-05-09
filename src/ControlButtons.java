@@ -55,7 +55,8 @@ public class ControlButtons {
         mainWindow.fractionButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Fraction));
         mainWindow.rootButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Root));
         mainWindow.exponentButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Exponent));
-        mainWindow.sineButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Sine));
+        mainWindow.sineButton.setOnAction(event -> {if (!Constants.isPressingShift) controlFormula.addOperator(Constants.Type.Sine);
+                                                                else controlFormula.addOperator(Constants.Type.ArcSine);});
         mainWindow.cosineButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Cosine));
         mainWindow.tangentButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Tangent));
 
@@ -70,6 +71,7 @@ public class ControlButtons {
         mainWindow.leftButton.setOnAction(event -> controlFormula.moveCursorLeft());
         mainWindow.rightButton.setOnAction(event -> controlFormula.moveCursorRight());
 
+        mainWindow.shiftButton.setOnAction(event -> Constants.isPressingShift = !Constants.isPressingShift);
 
 
         mainWindow.mainLayout.setOnMousePressed(event -> {

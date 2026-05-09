@@ -68,6 +68,21 @@ public class ControlFormula {
             currentField.add(tangentNode, cursorPosition);
             cursorPosition = 0;
             currentField = tangentNode.getChildField();
+        } else if (type == Constants.Type.ArcSine)  {
+            ArcSineNode singleSpecialNode = new ArcSineNode(currentField);
+            currentField.add(singleSpecialNode, cursorPosition);
+            cursorPosition = 0;
+            currentField = singleSpecialNode.getChildField();
+        } else if (type == Constants.Type.ArcCosine)  {
+            ArcSineNode singleSpecialNode = new ArcSineNode(currentField); // Muss Arccosine sein
+            currentField.add(singleSpecialNode, cursorPosition);
+            cursorPosition = 0;
+            currentField = singleSpecialNode.getChildField();
+        } else if (type == Constants.Type.ArcTangent)  {
+            ArcSineNode singleSpecialNode = new ArcSineNode(currentField); // Muss ArcTangens sein
+            currentField.add(singleSpecialNode, cursorPosition);
+            cursorPosition = 0;
+            currentField = singleSpecialNode.getChildField();
         } else {
             incrementCursorPosition();
         }
