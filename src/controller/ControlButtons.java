@@ -63,8 +63,10 @@ public class ControlButtons {
         mainWindow.exponentButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Exponent));
         mainWindow.sineButton.setOnAction(event -> {if (!Constants.isPressingShift) controlFormula.addOperator(Constants.Type.Sine);
                                                                 else controlFormula.addOperator(Constants.Type.ArcSine);});
-        mainWindow.cosineButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Cosine));
-        mainWindow.tangentButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Tangent));
+        mainWindow.cosineButton.setOnAction(event -> {if (!Constants.isPressingShift) controlFormula.addOperator(Constants.Type.Cosine);
+                                                                else controlFormula.addOperator(Constants.Type.ArcCosine);});
+        mainWindow.tangentButton.setOnAction(event -> {if (!Constants.isPressingShift) controlFormula.addOperator(Constants.Type.Tangent);
+                                                                else controlFormula.addOperator(Constants.Type.ArcTangent);});
         mainWindow.logButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Logaritm));
 
         mainWindow.calculateButton.setOnAction(event -> controlFormula.calculate());
@@ -78,7 +80,10 @@ public class ControlButtons {
         mainWindow.leftButton.setOnAction(event -> controlFormula.moveCursorLeft());
         mainWindow.rightButton.setOnAction(event -> controlFormula.moveCursorRight());
 
-        mainWindow.shiftButton.setOnAction(event -> Constants.isPressingShift = !Constants.isPressingShift);
+        mainWindow.shiftButton.setOnAction(event -> {
+            Constants.isPressingShift = !Constants.isPressingShift;
+            mainWindow.toggleButtonText(Constants.isPressingShift);
+        });
 
 
         mainWindow.mainLayout.setOnMousePressed(event -> {

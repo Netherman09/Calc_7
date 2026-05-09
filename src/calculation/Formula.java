@@ -208,12 +208,9 @@ public class Formula {
             spn.setValueField(new Field(innerNodeStack));
             spn.getValueField().deleteEmptyNodes();
             nodes.set(exponentPosition, spn);
-            System.out.println("Single Special nodes.Node");
             for (int i = field.getLength() - 1; i >= 0; i--) {
                 System.out.println("i" + i + " " + field.getNode(i).getType());
                 if (field.getNode(i).getType() == Constants.Type.Power) {
-                    spn = (ExponentSpecialNode)field.getNode(i);
-                    System.out.println("Assign Signle Special nodes.Node");
                     break;
                 }
             }

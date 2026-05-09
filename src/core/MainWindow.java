@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,6 +22,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindow extends Application {
 
@@ -68,6 +72,8 @@ public class MainWindow extends Application {
     public Button shiftButton;
     HBox equationBox;
 
+    List<Button> shiftButtons = new ArrayList<>();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -93,9 +99,9 @@ public class MainWindow extends Application {
         nineButton = createNewButton("9", STYLE.LightGray);
         pointButton = createNewButton(".", STYLE.LightGray);
 
-        sineButton = createNewButton("sin", STYLE.Gray);
-        cosineButton = createNewButton("cos", STYLE.Gray);
-        tangentButton = createNewButton("tan", STYLE.Gray);
+        sineButton = createNewButton("sin", "asin", STYLE.Gray);
+        cosineButton = createNewButton("cos", "acos", STYLE.Gray);
+        tangentButton = createNewButton("tan", "atan", STYLE.Gray);
         logButton = createNewButton("log", STYLE.Gray);
         lnButton = createNewButton("", STYLE.Gray); // Text: ln
         varButton = createNewButton("Var", STYLE.Gray); // Text: Var 1
@@ -209,6 +215,64 @@ public class MainWindow extends Application {
         button.setMinHeight(buttonHeight);
         button.setMaxHeight(buttonHeight);
         return button;
+    }
+
+    private Button createNewButton(String text, String shiftText, STYLE style) {
+        int buttonWidth = 71;
+        int buttonHeight = 55;
+
+        Label buttonLabel = new Label(text);
+        Label shiftLabel = new Label(shiftText);
+
+        buttonLabel.setPadding(new Insets(16, 0, 0,0));
+        buttonLabel.setStyle("-fx-text-fill: white; -fx-font-size: 19px; -fx-font-weight: bold;");
+        shiftLabel.setPadding(new Insets(-6, 0, 0,0));
+        shiftLabel.setStyle("-fx-text-fill: grey; -fx-font-size: 13px; -fx-font-weight: bold;");
+
+        buttonLabel.setId(text);
+        shiftLabel.setId(shiftText);
+
+        VBox content = new VBox(0);
+        content.getChildren().addAll(buttonLabel, shiftLabel);
+        content.setMinWidth(buttonWidth);
+        content.setMaxWidth(buttonWidth);
+        content.setMinHeight(buttonHeight);
+        content.setMaxHeight(buttonHeight);
+
+        content.setAlignment(Pos.CENTER);
+
+        Button button = new Button();
+        button.setGraphic(content);
+        button.getStyleClass().add("standard_button");
+        if (style == STYLE.Gray) button.getStyleClass().add("button_gray");
+        if (style == STYLE.Orange) button.getStyleClass().add("button_orange");
+        if (style == STYLE.OrangeText) button.getStyleClass().add("button_orange_text");
+        if (style == STYLE.LightGray) button.getStyleClass().add("button_lightgray");
+        if (style == STYLE.RedText) button.getStyleClass().add("button_red_text");
+        button.setMinWidth(buttonWidth);
+        button.setMaxWidth(buttonWidth);
+        button.setMinHeight(buttonHeight);
+        button.setMaxHeight(buttonHeight);
+
+
+        shiftButtons.add(button);
+        return button;
+    }
+
+    public void toggleButtonText(boolean active) {
+        shiftButton.getStyleClass().removeLast();
+        if (active) shiftButton.getStyleClass().add("button_lightgray");
+        if (!active) shiftButton.getStyleClass().add("button_gray");
+        for (Button button : shiftButtons) {
+            VBox content = ((VBox)button.getGraphic());
+            String mainText = content.getChildren().get(0).getId();
+            String shiftText = content.getChildren().get(1).getId();
+            content.getChildren().get(0).setId(shiftText);
+            ((Label)content.getChildren().get(0)).setText(shiftText);
+
+            content.getChildren().get(1).setId(mainText);
+            ((Label)content.getChildren().get(1)).setText(mainText);
+        }
     }
 
     public void render(javafx.scene.Node node) {

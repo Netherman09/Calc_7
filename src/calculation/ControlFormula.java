@@ -79,12 +79,12 @@ public class ControlFormula {
             cursorPosition = 0;
             currentField = singleSpecialNode.getChildField();
         } else if (type == Constants.Type.ArcCosine)  {
-            ArcSineNode singleSpecialNode = new ArcSineNode(currentField); // Muss Arccosine sein
+            ArcCosineNode singleSpecialNode = new ArcCosineNode(currentField); // Muss Arccosine sein
             currentField.add(singleSpecialNode, cursorPosition);
             cursorPosition = 0;
             currentField = singleSpecialNode.getChildField();
         } else if (type == Constants.Type.ArcTangent)  {
-            ArcSineNode singleSpecialNode = new ArcSineNode(currentField); // Muss ArcTangens sein
+            ArcTangentNode singleSpecialNode = new ArcTangentNode(currentField); // Muss ArcTangens sein
             currentField.add(singleSpecialNode, cursorPosition);
             cursorPosition = 0;
             currentField = singleSpecialNode.getChildField();

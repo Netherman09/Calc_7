@@ -28,7 +28,8 @@ public class CopyUtility {
                 .registerSubtype(ConstantsNode.class, "Constant")
                 .registerSubtype(PointNode.class, "Point")
                 .registerSubtype(ArcSineNode.class, "Arcsine")
-                .registerSubtype(PointNode.class, "Point")
+                .registerSubtype(ArcCosineNode.class, "ArcCosine")
+                .registerSubtype(ArcTangentNode.class, "ArcTangent")
                 .registerSubtype(OpeningBracketNode.class, "OpenBracket")
                 .registerSubtype(ClosingBracketNode.class, "ClosingBracket")
                 .registerSubtype(LogaritmNode.class, "LogNode");

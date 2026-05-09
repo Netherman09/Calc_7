@@ -1,18 +1,23 @@
+package nodes;
+
+import calculation.ControlFormula;
+import calculation.Field;
+import core.Constants;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
-public class ArcSineNode extends SingleSpecialNode {
-    ArcSineNode(Field parentField) {
-        super(Constants.Precedence.Points, Constants.Type.ArcSine, parentField);
+public class ArcCosineNode extends SingleSpecialNode {
+    public ArcCosineNode(Field parentField) {
+        super(Constants.Precedence.Points, Constants.Type.ArcCosine, parentField);
     }
 
     @Override
     public javafx.scene.Node render(Field currentField, int position, boolean renderSmaller, ControlFormula controlFormula) {
         HBox node = new HBox();
         node.setAlignment(Pos.CENTER);
-        Text text = new Text("asin(");
+        Text text = new Text("acos(");
         text.getStyleClass().add("calculation_text");
 
         HBox childNode = new HBox();
