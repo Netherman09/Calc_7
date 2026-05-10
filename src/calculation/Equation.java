@@ -8,22 +8,12 @@ import java.util.ArrayList;
 public class Equation {
 
     public double calculate(Field rootField) {
-        System.out.println("-INPUT-");
-        for (int i = 0; i < rootField.getLength(); i++) {
-            System.out.println("I: " + rootField.getNode(i).getType() + " " + rootField.getNode(i).getValue());
-        }
-
         rootField = combineValueNodes(rootField);
         rootField = combineExponents(rootField);
         rootField = placeMultiplicationNodes(rootField);
         rootField = replaceConstantsNodes(rootField);
         rootField = calculateSpecialNodes(rootField);
         rootField = invertNumbersWithNegativeNode(rootField);
-
-        System.out.println("-NODES-");
-        for (int i = 0; i < rootField.getLength(); i++) {
-            System.out.println("N: " + rootField.getNode(i).getType() + " " + rootField.getNode(i).getValue());
-        }
 
         ArrayList<Node> outputNodes = toReversePolishNotation(rootField);
         double result = calculatePolishNotation(outputNodes);
