@@ -32,7 +32,9 @@ public class CopyUtility {
                 .registerSubtype(ArcTangentNode.class, "ArcTangent")
                 .registerSubtype(OpeningBracketNode.class, "OpenBracket")
                 .registerSubtype(ClosingBracketNode.class, "ClosingBracket")
-                .registerSubtype(LogaritmNode.class, "LogNode");
+                .registerSubtype(LogaritmNode.class, "LogNode")
+                .registerSubtype(LogNatNode.class, "lnNode")
+                .registerSubtype(FactorialNode.class, "Factorial");
 
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapterFactory).create();
         String jsonString = gson.toJson(object);

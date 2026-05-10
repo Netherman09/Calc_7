@@ -67,7 +67,9 @@ public class ControlButtons {
                                                                 else controlFormula.addOperator(Constants.Type.ArcCosine);});
         mainWindow.tangentButton.setOnAction(event -> {if (!Constants.isPressingShift) controlFormula.addOperator(Constants.Type.Tangent);
                                                                 else controlFormula.addOperator(Constants.Type.ArcTangent);});
-        mainWindow.logButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Logaritm));
+        mainWindow.logButton.setOnAction(event -> {if (!Constants.isPressingShift) controlFormula.addOperator(Constants.Type.Logaritm);
+                                                                else controlFormula.addOperator(Constants.Type.Factorial);});
+        mainWindow.lnButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Ln));
 
         mainWindow.calculateButton.setOnAction(event -> controlFormula.calculate());
 

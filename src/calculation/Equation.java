@@ -8,22 +8,13 @@ import java.util.ArrayList;
 public class Equation {
 
     public double calculate(Field rootField) {
-        System.out.println("-INPUT-");
-        for (int i = 0; i < rootField.getLength(); i++) {
-            System.out.println("I: " + rootField.getNode(i).getType() + " " + rootField.getNode(i).getValue());
-        }
-
         rootField = combineValueNodes(rootField);
         rootField = combineExponents(rootField);
+        rootField = combineFactorialNodes(rootField);
         rootField = placeMultiplicationNodes(rootField);
         rootField = replaceConstantsNodes(rootField);
         rootField = calculateSpecialNodes(rootField);
         rootField = invertNumbersWithNegativeNode(rootField);
-
-        System.out.println("-NODES-");
-        for (int i = 0; i < rootField.getLength(); i++) {
-            System.out.println("N: " + rootField.getNode(i).getType() + " " + rootField.getNode(i).getValue());
-        }
 
         ArrayList<Node> outputNodes = toReversePolishNotation(rootField);
         double result = calculatePolishNotation(outputNodes);
@@ -46,7 +37,7 @@ public class Equation {
     private Field combineExponents(Field rootField) {
         ArrayList<Node> newFieldNodes = new ArrayList<>();
         ExponentSpecialNode lastExponent = null;
-        ArrayList<ExponentSpecialNode> lastExponents = new ArrayList<>();
+        //ArrayList<ExponentSpecialNode> lastExponents = new ArrayList<>();
         int bracketsCounter = 0;
         boolean isCurrentlyInExponent = false;
 
@@ -57,7 +48,7 @@ public class Equation {
                 isCurrentlyInExponent = true;
                 newFieldNodes.addFirst(rootField.getNode(i));
                 lastExponent = (ExponentSpecialNode)newFieldNodes.getFirst();
-                lastExponents.add(lastExponent);
+                //lastExponents.add(lastExponent);
                 lastExponent.getValueField().getContent().clear();
                 continue;
             }
@@ -72,6 +63,44 @@ public class Equation {
             }
 
             if (isCurrentlyInExponent && bracketsCounter == 0) isCurrentlyInExponent = false;
+        }
+
+        Field outputField = new Field();
+        outputField.deleteEmptyNodes();
+        outputField.getContent().addAll(newFieldNodes);
+        return outputField;
+    }
+
+    // Verschiebt alle Nodes die, Teil eines Exponenten sein sollten in das zweite Feld der Exponenten-nodes.Node
+    private Field combineFactorialNodes(Field rootField) {
+        ArrayList<Node> newFieldNodes = new ArrayList<>();
+        FactorialNode lastFactorial = null;
+        //ArrayList<FactorialNode> lastFactorialNodes = new ArrayList<>();
+        int bracketsCounter = 0;
+        boolean isCurrentlyInFactorial = false;
+
+        for (int i = rootField.getLength() - 1; i >= 0; i--) {
+            System.out.println(rootField.getNode(i));
+
+            if (!isCurrentlyInFactorial && rootField.getNode(i).getType() == Constants.Type.Factorial) {
+                isCurrentlyInFactorial = true;
+                newFieldNodes.addFirst(rootField.getNode(i));
+                lastFactorial = (FactorialNode) newFieldNodes.getFirst();
+                //lastFactorialNodes.add(lastFactorial);
+                lastFactorial.getValueField().getContent().clear();
+                continue;
+            }
+
+            if (isCurrentlyInFactorial && rootField.getNode(i).getType() == Constants.Type.ClosingBracket) bracketsCounter++;
+            if (isCurrentlyInFactorial && rootField.getNode(i).getType() == Constants.Type.OpeningBracket) bracketsCounter--;
+
+            if (isCurrentlyInFactorial) {
+                lastFactorial.getValueField().add(rootField.getNode(i), 0);
+            } else {
+                newFieldNodes.addFirst(rootField.getNode(i));
+            }
+
+            if (isCurrentlyInFactorial && bracketsCounter == 0) isCurrentlyInFactorial = false;
         }
 
         Field outputField = new Field();
@@ -145,7 +174,6 @@ public class Equation {
                 value = rootfield.getNode(i).getType() == Constants.Type.Fraction ? num1 / num2 : value; // Bruch
                 value = rootfield.getNode(i).getType() == Constants.Type.Root ? Math.pow(num2, 1/num1) : value; // Wurzel
                 value = rootfield.getNode(i).getType() == Constants.Type.Logaritm ? customLog(num1, num2) : value; // Wurzel
-                System.out.println("VALUE: " + value + " NUM1: " + num1 + " NUM2: " + num2);
                 Node valueNode = new ValueNode(value, null);
                 newFieldNodes.add(valueNode);
             } else if (rootfield.getNode(i).getNodeType() == Constants.NodeType.ExponentSpecial) { // Exponenten
@@ -154,6 +182,16 @@ public class Equation {
                 double num1 = calculate(exponentSpecialNode.getValueField());
                 double num2 = calculate(exponentSpecialNode.getChildField());
                 value = rootfield.getNode(i).getType() == Constants.Type.Power ? Math.pow(num1, num2) : value; // Exponent
+                Node valueNode = new ValueNode(value, null);
+                newFieldNodes.add(valueNode);
+            } else if (rootfield.getNode(i).getNodeType() == Constants.NodeType.Factorial) { // Fakultät
+                System.out.println("Fakultät");
+                double value = 0;
+                FactorialNode factorialNode = (FactorialNode) rootfield.getNode(i);
+                double num = calculate(factorialNode.getValueField());
+                System.out.println("Value: " + num);
+                if (num % 1 != 0) num = -1;
+                value = calculateFactorial(num);
                 Node valueNode = new ValueNode(value, null);
                 newFieldNodes.add(valueNode);
             } else if (rootfield.getNode(i).getNodeType() == Constants.NodeType.SingleSpecial) { // SingleSpecial Nodes
@@ -168,6 +206,7 @@ public class Equation {
                 value = rootfield.getNode(i).getType() == Constants.Type.ArcSine ? Math.toDegrees(Math.asin(num)) : value; // Arcsinus
                 value = rootfield.getNode(i).getType() == Constants.Type.ArcCosine ? Math.toDegrees(Math.acos(num)) : value; // Arccosinus
                 value = rootfield.getNode(i).getType() == Constants.Type.ArcTangent ? Math.toDegrees(Math.atan(num)) : value; // Arctangens
+                value = rootfield.getNode(i).getType() == Constants.Type.Ln ? Math.log(num) : value; // Arctangens
                 Node valueNode = new ValueNode(value, null);
                 newFieldNodes.add(valueNode);
             }
@@ -177,6 +216,18 @@ public class Equation {
         outputField.deleteEmptyNodes();
         outputField.getContent().addAll(newFieldNodes);
         return outputField;
+    }
+
+    private double calculateFactorial(double num) {
+        if (num < 0) return Double.NaN;
+
+        double result = 1;
+        while (num > 0) {
+            result *= num;
+            System.out.println("NUM: " + num);
+            num--;
+        }
+        return result;
     }
 
     private double customLog(double base, double x) {
@@ -244,7 +295,7 @@ public class Equation {
         for (int i = 0; i < rootfield.getLength(); i++) {
             if (i < rootfield.getLength() - 1 && rootfield.getNode(i).getType() == Constants.Type.Subtraction && rootfield.getNode(i + 1).getType() == Constants.Type.Value) {
                 Node additionNode = new AdditionNode(null);
-                if (i > 0) newFieldNodes.add(additionNode);
+                if (i > 0 && rootfield.getNode(i - 1).getType() != Constants.Type.OpeningBracket && rootfield.getNode(i - 1).getType() != Constants.Type.ClosingBracket) newFieldNodes.add(additionNode);
 
                 rootfield.getNode(i + 1).setValue(rootfield.getNode(i + 1).getValue() * -1);
                 newFieldNodes.add(rootfield.getNode(i + 1));

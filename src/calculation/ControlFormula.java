@@ -40,6 +40,7 @@ public class ControlFormula {
         else if (type == Constants.Type.OpeningBracket) node = new OpeningBracketNode(currentField);
         else if (type == Constants.Type.ClosingBracket) node = new ClosingBracketNode(currentField);
         else if (type == Constants.Type.Point) node = new PointNode(currentField);
+        else if (type == Constants.Type.Factorial) node = new FactorialNode(currentField);
 
         if (node != null) currentField.add(node, cursorPosition);
 
@@ -79,12 +80,12 @@ public class ControlFormula {
             cursorPosition = 0;
             currentField = singleSpecialNode.getChildField();
         } else if (type == Constants.Type.ArcCosine)  {
-            ArcCosineNode singleSpecialNode = new ArcCosineNode(currentField); // Muss Arccosine sein
+            ArcCosineNode singleSpecialNode = new ArcCosineNode(currentField);
             currentField.add(singleSpecialNode, cursorPosition);
             cursorPosition = 0;
             currentField = singleSpecialNode.getChildField();
         } else if (type == Constants.Type.ArcTangent)  {
-            ArcTangentNode singleSpecialNode = new ArcTangentNode(currentField); // Muss ArcTangens sein
+            ArcTangentNode singleSpecialNode = new ArcTangentNode(currentField);
             currentField.add(singleSpecialNode, cursorPosition);
             cursorPosition = 0;
             currentField = singleSpecialNode.getChildField();
@@ -93,6 +94,11 @@ public class ControlFormula {
             currentField.add(logaritmNode, cursorPosition);
             cursorPosition = 0;
             currentField = logaritmNode.getFirstChild();
+        } else if (type == Constants.Type.Ln)  {
+            LogNatNode logNatNode = new LogNatNode(currentField);
+            currentField.add(logNatNode, cursorPosition);
+            cursorPosition = 0;
+            currentField = logNatNode.getChildField();
         } else {
             incrementCursorPosition();
         }

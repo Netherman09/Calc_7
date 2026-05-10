@@ -83,7 +83,12 @@ public class LogaritmNode extends SpecialNode{
         if (getParentField().equals(currentField) && getParentField().getIndexOf(this) == position) {
             fullRenderNode.getChildren().add(drawCursor());
         }
-        fullRenderNode.getChildren().addAll(text, firstNode, radicandStack);
+        Text bracket1 = new Text("(");
+        bracket1.getStyleClass().add("calculation_text");
+        Text bracket2 = new Text(")");
+        bracket2.getStyleClass().add("calculation_text");
+
+        fullRenderNode.getChildren().addAll(text, firstNode, bracket1, radicandStack, bracket2);
         HBox.setMargin(fullRenderNode, new Insets(0, 0, 0, 5));
 
         return fullRenderNode;

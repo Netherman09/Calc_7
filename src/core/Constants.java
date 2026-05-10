@@ -31,14 +31,17 @@ public class Constants {
         ArcCosine,
         ArcTangent,
         Var,
-        Logaritm
+        Logaritm,
+        Ln,
+        Factorial
     }
 
     public enum NodeType {
         Normal,
         Special,
         ExponentSpecial,
-        SingleSpecial
+        SingleSpecial,
+        Factorial
     }
 
     public enum VarType {

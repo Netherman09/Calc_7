@@ -102,8 +102,8 @@ public class MainWindow extends Application {
         sineButton = createNewButton("sin", "asin", STYLE.Gray);
         cosineButton = createNewButton("cos", "acos", STYLE.Gray);
         tangentButton = createNewButton("tan", "atan", STYLE.Gray);
-        logButton = createNewButton("log", STYLE.Gray);
-        lnButton = createNewButton("", STYLE.Gray); // Text: ln
+        logButton = createNewButton("log", "!", STYLE.Gray);
+        lnButton = createNewButton("ln", STYLE.Gray);
         varButton = createNewButton("Var", STYLE.Gray); // Text: Var 1
         ansButton = createNewButton("Ans", STYLE.Gray); // Text: Var 2
 
@@ -135,9 +135,9 @@ public class MainWindow extends Application {
         exponentButton = createNewButton("x^y", STYLE.Gray);
 
         GridPane buttonGrid = new GridPane(5, 5);
-        buttonGrid.addColumn(0, shiftButton, sineButton, lnButton, sevenButton, fourButton, oneButton, zeroButton);
+        buttonGrid.addColumn(0, shiftButton, sineButton, historyButton, sevenButton, fourButton, oneButton, zeroButton);
         buttonGrid.addColumn(1, leftButton, cosineButton, logButton, eightButton, fiveButton, twoButton, pointButton);
-        buttonGrid.addColumn(2, rightButton, tangentButton, historyButton, nineButton, sixButton, threeButton, expButton);
+        buttonGrid.addColumn(2, rightButton, tangentButton, lnButton, nineButton, sixButton, threeButton, expButton);
         buttonGrid.addColumn(3, deleteButton, exponentButton, openingBracketButton, divisionButton, multiplicationButton, subtractButton, addButton);
         buttonGrid.addColumn(4, clearButton, rootButton, closingBracketButton, fractionButton, varButton, ansButton, calculateButton);
         buttonGrid.setPadding(new Insets(10, 0, 0, 0));
