@@ -82,6 +82,18 @@ public class ControlButtons {
         mainWindow.leftButton.setOnAction(event -> controlFormula.moveCursorLeft());
         mainWindow.rightButton.setOnAction(event -> controlFormula.moveCursorRight());
 
+        mainWindow.topmostButton.setOnAction(event -> {
+            if (!mainWindow.primaryStage.isAlwaysOnTop()) {
+                mainWindow.topmostButton.getStyleClass().add("button_orange");
+                mainWindow.topmostButton.getStyleClass().remove("button_gray");
+                mainWindow.primaryStage.setAlwaysOnTop(true);
+            } else {
+                mainWindow.topmostButton.getStyleClass().remove("button_orange");
+                mainWindow.topmostButton.getStyleClass().add("button_gray");
+                mainWindow.primaryStage.setAlwaysOnTop(false);
+            }
+        });
+
         mainWindow.shiftButton.setOnAction(event -> {
             Constants.isPressingShift = !Constants.isPressingShift;
             mainWindow.toggleButtonText(Constants.isPressingShift);

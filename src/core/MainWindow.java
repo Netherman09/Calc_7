@@ -10,11 +10,9 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -70,7 +68,11 @@ public class MainWindow extends Application {
     public Button historyButton;
     public Button expButton;
     public Button shiftButton;
-    HBox equationBox;
+    StackPane equationHolder;
+    ScrollPane equationBox;
+    HBox resultBox;
+    public Button topmostButton;
+    double offset = 0;
 
     List<Button> shiftButtons = new ArrayList<>();
 
@@ -79,13 +81,20 @@ public class MainWindow extends Application {
 
         this.primaryStage = primaryStage;
 
-        equationBox = new HBox();
-        equationBox.setMinHeight(130);
-        equationBox.setMaxHeight(130);
-        equationBox.setMinWidth(377);
-        equationBox.setMaxWidth(377);
-        equationBox.setPadding(new Insets(10));
-        equationBox.getStyleClass().add("calculation_field");
+        equationBox = new ScrollPane();
+        equationBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        equationBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        equationBox.setPannable(true);
+        StackPane.setAlignment(equationBox, Pos.TOP_LEFT);
+        resultBox = new HBox();
+        StackPane.setAlignment(resultBox, Pos.BOTTOM_RIGHT);
+        equationHolder = new StackPane(resultBox, equationBox);
+        equationHolder.setMinHeight(130);
+        equationHolder.setMaxHeight(130);
+        equationHolder.setMinWidth(377);
+        equationHolder.setMaxWidth(377);
+        equationHolder.setPadding(new Insets(10));
+        equationHolder.getStyleClass().add("calculation_field");
 
         zeroButton = createNewButton("0", STYLE.LightGray);
         oneButton = createNewButton("1", STYLE.LightGray);
@@ -142,6 +151,14 @@ public class MainWindow extends Application {
         buttonGrid.addColumn(4, clearButton, rootButton, closingBracketButton, fractionButton, varButton, ansButton, calculateButton);
         buttonGrid.setPadding(new Insets(10, 0, 0, 0));
 
+        topmostButton = new Button();
+        topmostButton.getStyleClass().add("button_topmost");
+        topmostButton.getStyleClass().add("button_gray");
+        topmostButton.setMaxSize(6, 6);
+        topmostButton.setMinSize(6, 6);
+        StackPane.setAlignment(topmostButton, Pos.TOP_LEFT);
+        StackPane.setMargin(topmostButton, new Insets(-5, 0, 0, -5));
+
         contextMenu = new ContextMenu();
         MenuItem closeItem = new MenuItem("Exit");
         closeItem.setOnAction(e -> closeWithStyle(primaryStage));
@@ -149,11 +166,11 @@ public class MainWindow extends Application {
         contextMenu.getStyleClass().add("context_menu");
 
         mainLayout = new VBox();
-        mainLayout.getChildren().addAll(equationBox, buttonGrid);
+        mainLayout.getChildren().addAll(equationHolder, buttonGrid);
 
         VBox slidingBox = createSlidingPanel();
 
-        rootStack = new StackPane(mainLayout, slidingBox);
+        rootStack = new StackPane(mainLayout, slidingBox, topmostButton);
         rootStack.getStyleClass().add("window_background");
 
         Scene root = new Scene(rootStack, Color.TRANSPARENT);
@@ -276,12 +293,15 @@ public class MainWindow extends Application {
     }
 
     public void render(javafx.scene.Node node) {
-        equationBox.getChildren().clear();
-        equationBox.getChildren().add(node);
+        equationBox.getContent();
+        equationBox.setFitToHeight(true);
+        equationBox.setContent(node);
+        equationBox.setHvalue(1);
     }
 
     public void clearAll() {
-        equationBox.getChildren().clear();
+        equationBox.setContent(null);
+        resultBox.getChildren().clear();
     }
 
     public void renderResult(String result) {
@@ -290,10 +310,23 @@ public class MainWindow extends Application {
 
         HBox resultWrapper = new HBox(text);
         resultWrapper.setAlignment(Pos.BOTTOM_RIGHT);
+        resultWrapper.setPadding(new  Insets(0, 0, -6, 0));
 
         HBox.setHgrow(resultWrapper, Priority.ALWAYS);
 
-        equationBox.getChildren().add(resultWrapper);
+        resultBox.getChildren().add(resultWrapper);
+    }
+
+    public void increaseOffset() {
+        System.out.println("Increase offset");
+        offset += 4;
+        equationBox.setPadding(new Insets(0, 0, 0, offset));
+    }
+
+    public void decreaseOffset() {
+        System.out.println("Decrease offset");
+        offset -= 4;
+        equationBox.setPadding(new Insets(0, 0, 0, offset));
     }
 
     public double[] getPosition() {

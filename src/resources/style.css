@@ -40,6 +40,11 @@
     -fx-text-fill: rgb(240, 60, 60);
 }
 
+.button_topmost {
+    -fx-background-radius: 10px;
+    -fx-border-width: 0px;
+}
+
 .calculation_field {
     -fx-background-color: rgba(0, 0, 0, 0.5);
     -fx-background-radius: 9;
@@ -51,15 +56,31 @@
     -fx-border-radius:9;
 }
 
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent; /* Der eigentliche Hintergrund */
+    -fx-border-width: 0;
+}
+
 .calculation_text {
     -fx-fill: white;
-        -fx-font-size: 26px;
+        -fx-font-size: 25px;
         -fx-font-weight: 600;
 }
 
 .calculation_result {
     -fx-fill: white;
-        -fx-font-size: 32px;
+        -fx-font-size: 28px;
         -fx-font-weight: bold;
 }
 

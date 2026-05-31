@@ -10,7 +10,6 @@ public class ControlFormula {
     Field startField;
     Field currentField;
     int cursorPosition;
-    //nodes.RootNode startRootNode;
     MainWindow mainWindow;
     Field lastEquation;
     boolean showsResult = false;
@@ -203,12 +202,12 @@ public class ControlFormula {
                     cursorPosition = parentNode.getParentField().getIndexOf(parentNode);
                 }
             } else if (currentField.getParent().getNodeType() == Constants.NodeType.ExponentSpecial) {
-                ExponentSpecialNode parentNode = (ExponentSpecialNode) currentField.getParent(); // Single Special Node wird noch nicht beachtet
+                ExponentSpecialNode parentNode = (ExponentSpecialNode) currentField.getParent();
                 System.out.println("Move out of Field");
                 currentField = parentNode.getParentField();
                 cursorPosition = parentNode.getParentField().getIndexOf(parentNode);
             } else if (currentField.getParent().getNodeType() == Constants.NodeType.SingleSpecial) {
-                SingleSpecialNode parentNode = (SingleSpecialNode) currentField.getParent(); // Single Special Node wird noch nicht beachtet
+                SingleSpecialNode parentNode = (SingleSpecialNode) currentField.getParent();
                 System.out.println("Move out of Field");
                 currentField = parentNode.getParentField();
                 cursorPosition = parentNode.getParentField().getIndexOf(parentNode);
@@ -222,7 +221,7 @@ public class ControlFormula {
                 System.out.println("Move Cursor in Field");
                 SpecialNode specialNode = (SpecialNode)currentField.getNode(cursorPosition);
                 currentField = specialNode.getSecondChild();
-                cursorPosition = specialNode.getFirstChild().getLength() - 1;
+                cursorPosition = specialNode.getSecondChild().getLength() - 1;
             } else if (currentField.getNode(cursorPosition).getNodeType() == Constants.NodeType.ExponentSpecial) {
                 System.out.println("Move Cursor in Field");
                 ExponentSpecialNode specialNode = (ExponentSpecialNode)currentField.getNode(cursorPosition);
@@ -240,7 +239,7 @@ public class ControlFormula {
     }
 
     public void setCursorPosition(Node clickedNode) {
-        System.out.println("Set Cursor Position");
+        System.out.println("Set Cursor Position: " + clickedNode.getType());
         currentField = clickedNode.getParentField();
         cursorPosition = clickedNode.getParentField().getIndexOf(clickedNode) + 1; // +1 damit man vor der Node ist auf die man Klickt
         renderAll();
@@ -253,10 +252,6 @@ public class ControlFormula {
         cleanAll(startField);
 
         currentField = startField;
-        mainWindow.clearAll();
-        renderAll();
-
-
 
         Equation equation = new Equation();
         System.out.println("--------Equation Start--------");
@@ -272,11 +267,16 @@ public class ControlFormula {
         showsResult = true;
         currentResult = result;
 
-        mainWindow.renderResult(textToShow);
+
         startField = lastEquation;
         currentField = startField;
         System.out.println("RESULT: " + result);
         Constants.lastResult = result;
+        cursorPosition = currentField.getLength() - 1;
+
+        mainWindow.clearAll();
+        mainWindow.renderResult(textToShow);
+        renderAll();
     }
 
     private void reconnectParentFields(Field field) {
