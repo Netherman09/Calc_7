@@ -28,7 +28,7 @@ public class MainWindow extends Application {
 
     ContextMenu contextMenu;
     public VBox mainLayout;
-    StackPane rootStack;
+    public StackPane rootStack;
     public Stage primaryStage;
 
     public Button zeroButton;
