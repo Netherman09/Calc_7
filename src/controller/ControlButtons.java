@@ -29,7 +29,7 @@ public class ControlButtons {
     }
 
     private void initializeLogic() {
-        mainWindow.mainLayout.setOnMouseClicked(event -> {
+        mainWindow.rootStack.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 mainWindow.showContextMenu(event.getScreenX(), event.getScreenY());
             }
@@ -112,14 +112,14 @@ public class ControlButtons {
         });
 
 
-        mainWindow.mainLayout.setOnMousePressed(event -> {
+        mainWindow.rootStack.setOnMousePressed(event -> {
             // getSceneX/Y ist die Position innerhalb deines Fensters
             mainWindow.hideContextMenu();
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
         });
 
-        mainWindow.mainLayout.setOnMouseDragged(event -> {
+        mainWindow.rootStack.setOnMouseDragged(event -> {
             // getScreenX/Y ist die absolute Position auf dem Monitor
             // Wir setzen das Fenster so, dass der Abstand zum Mauszeiger gleich bleibt
             mainWindow.primaryStage.setX(event.getScreenX() - xOffset);
