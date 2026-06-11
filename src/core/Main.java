@@ -13,8 +13,6 @@ public class Main {
         // - Wenn man die öffnende Klammer setzt, wird die schließende auch gleich gesetzt und der Cursor zwischen die beiden Klammern gepackt
         // - Die Möglichkeit einfach Zehnerpotenzen einzugeben
         // - vllt. Bracket Matching (Die Klammer die zu einer anderen gehört wird farblich hervorgehoben)
-        // - Weitere Operatoren: Binomialkoeffizient, Arcsinus, -cosinus und -tangens, logarithmus & ln, Fakultät
-        // - Anderer Operator soll klein in Grau darüber gezeigt werden
         // - Zahlen in Brüche umwandeln wenn man zweimal auf '=' drückt
         // - Auf Ans und Var Button soll klein die Zahl stehen die gespeichert ist
 
@@ -23,5 +21,6 @@ public class Main {
         // - Var Funktion
         // - Ans Funktion
         // - Konstanten Panel (Ein Panel wo alle wichtigen Konstanten drin stehen, die man dann wie eine Variable nutzen kann direkt (z.b. Pi, Gravitationskonstante g, Eulersche Zahl e))
-    }
+        // - Weitere Operatoren: (Binomialkoeffizient), Arcsinus, -cosinus und -tangens, logarithmus & ln, Fakultät
+    }   // - Anderer Operator soll klein in Grau darüber gezeigt werden
 }

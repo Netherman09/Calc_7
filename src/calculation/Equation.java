@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Equation {
 
-    public double calculate(Field rootField) {
+    public double calculate(Field rootField, boolean doRounding) {
         rootField = combineValueNodes(rootField);
         rootField = combineExponents(rootField);
         rootField = combineFactorialNodes(rootField);
@@ -19,10 +19,12 @@ public class Equation {
         ArrayList<Node> outputNodes = toReversePolishNotation(rootField);
         double result = calculatePolishNotation(outputNodes);
 
-        if (result < 10) result = round(result, 5);
-        else if (result < 100) result = round(result, 4);
-        else if (result < Integer.MAX_VALUE) result = round(result, 3);
-        else if (result < Long.MAX_VALUE) result = round(result, 1);
+        if (!doRounding) return result;
+
+        if (result < 10) result = round(result, 6);
+        else if (result < 100) result = round(result, 5);
+        else if (result < Integer.MAX_VALUE) result = round(result, 4);
+        else if ((result * 11) < Long.MAX_VALUE) result = round(result, 2);
         return result;
     }
 
@@ -169,8 +171,8 @@ public class Equation {
             } else if (rootfield.getNode(i).getNodeType() == Constants.NodeType.Special) { // Special Nodes
                 double value = 0;
                 SpecialNode specialNode = (SpecialNode) rootfield.getNode(i);
-                double num1 = calculate(specialNode.getFirstChild());
-                double num2 = calculate(specialNode.getSecondChild());
+                double num1 = calculate(specialNode.getFirstChild(), false);
+                double num2 = calculate(specialNode.getSecondChild(), false);
                 value = rootfield.getNode(i).getType() == Constants.Type.Fraction ? num1 / num2 : value; // Bruch
                 value = rootfield.getNode(i).getType() == Constants.Type.Root ? Math.pow(num2, 1/num1) : value; // Wurzel
                 value = rootfield.getNode(i).getType() == Constants.Type.Logaritm ? customLog(num1, num2) : value; // Wurzel
@@ -179,8 +181,8 @@ public class Equation {
             } else if (rootfield.getNode(i).getNodeType() == Constants.NodeType.ExponentSpecial) { // Exponenten
                 double value = 0;
                 ExponentSpecialNode exponentSpecialNode = (ExponentSpecialNode) rootfield.getNode(i);
-                double num1 = calculate(exponentSpecialNode.getValueField());
-                double num2 = calculate(exponentSpecialNode.getChildField());
+                double num1 = calculate(exponentSpecialNode.getValueField(), false);
+                double num2 = calculate(exponentSpecialNode.getChildField(), false);
                 value = rootfield.getNode(i).getType() == Constants.Type.Power ? Math.pow(num1, num2) : value; // Exponent
                 Node valueNode = new ValueNode(value, null);
                 newFieldNodes.add(valueNode);
@@ -188,16 +190,18 @@ public class Equation {
                 System.out.println("Fakultät");
                 double value = 0;
                 FactorialNode factorialNode = (FactorialNode) rootfield.getNode(i);
-                double num = calculate(factorialNode.getValueField());
+                double num = calculate(factorialNode.getValueField(), false);
                 System.out.println("Value: " + num);
                 if (num % 1 != 0) num = -1;
                 value = calculateFactorial(num);
+                System.out.println("Factorial Value: " + value);
                 Node valueNode = new ValueNode(value, null);
+                System.out.println("Factorial Value 2: " + valueNode.getValue());
                 newFieldNodes.add(valueNode);
             } else if (rootfield.getNode(i).getNodeType() == Constants.NodeType.SingleSpecial) { // SingleSpecial Nodes
                 double value = 0;
                 SingleSpecialNode singleSpecialNode = (SingleSpecialNode) rootfield.getNode(i);
-                double num = calculate(singleSpecialNode.getChildField());
+                double num = calculate(singleSpecialNode.getChildField(), false);
                 double numInRadians = Math.toRadians(num);
                 System.out.println("SINGLE VALUE: " + value + " NUM1: " + num + " NUM2: " + numInRadians);
                 value = rootfield.getNode(i).getType() == Constants.Type.Sine ? Math.sin(numInRadians) : value; // Sinus
@@ -215,6 +219,9 @@ public class Equation {
         Field outputField = new Field();
         outputField.deleteEmptyNodes();
         outputField.getContent().addAll(newFieldNodes);
+        for (int i = 0; i < outputField.getLength(); i++) {
+            System.out.println(outputField.getNode(i).getValue());
+        }
         return outputField;
     }
 
@@ -295,7 +302,8 @@ public class Equation {
         for (int i = 0; i < rootfield.getLength(); i++) {
             if (i < rootfield.getLength() - 1 && rootfield.getNode(i).getType() == Constants.Type.Subtraction && rootfield.getNode(i + 1).getType() == Constants.Type.Value) {
                 Node additionNode = new AdditionNode(null);
-                if (i > 0 && rootfield.getNode(i - 1).getType() != Constants.Type.OpeningBracket && rootfield.getNode(i - 1).getType() != Constants.Type.ClosingBracket) newFieldNodes.add(additionNode);
+                if (i > 0 && rootfield.getNode(i - 1).getType() != Constants.Type.OpeningBracket /*&& rootfield.getNode(i - 1).getType() != Constants.Type.ClosingBracket*/)
+                    newFieldNodes.add(additionNode);
 
                 rootfield.getNode(i + 1).setValue(rootfield.getNode(i + 1).getValue() * -1);
                 newFieldNodes.add(rootfield.getNode(i + 1));

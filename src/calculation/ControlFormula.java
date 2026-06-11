@@ -6,6 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import nodes.*;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 public class ControlFormula {
     Field startField;
     Field currentField;
@@ -14,6 +17,7 @@ public class ControlFormula {
     Field lastEquation;
     boolean showsResult = false;
     double currentResult;
+    public boolean newCalculation;
 
     public ControlFormula(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -103,6 +107,7 @@ public class ControlFormula {
         }
 
         renderAll();
+        newCalculation = true;
     }
 
     public void addConstant(double value, String symbol) {
@@ -128,13 +133,16 @@ public class ControlFormula {
 
     private void incrementCursorPosition() {
         cursorPosition++;
+        newCalculation = true;
     }
 
     private void decrementCursorPosition() {
         cursorPosition--;
+        newCalculation = true;
     }
 
     public void moveCursorRight() {
+        newCalculation = true;
         System.out.println("Move Cursor Right");
         if (cursorPosition == currentField.getLength() - 1 && currentField.hasParent()) {
             System.out.println("At Field End");
@@ -187,6 +195,7 @@ public class ControlFormula {
     }
 
     public void moveCursorLeft() {
+        newCalculation = true;
         System.out.println("Mov Cursor left");
         if (cursorPosition == 0 && currentField.hasParent()) {
             System.out.println("At Field Beginning");
@@ -255,14 +264,14 @@ public class ControlFormula {
 
         Equation equation = new Equation();
         System.out.println("--------Equation Start--------");
-        double result = equation.calculate(startField);
+        double result = equation.calculate(startField, true);
 
-        String textToShow;
-        if (result % 1 == 0 && result < Long.MAX_VALUE) {
-            textToShow = String.valueOf((long) result); // Zeigt "5"
-        } else {
-            textToShow = String.valueOf(result);      // Zeigt "5.5"
-        }
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(' '); // Leerzeichen für Tausender
+        symbols.setDecimalSeparator('.');  // Komma für die Nachkommastellen
+
+        DecimalFormat formatter = new DecimalFormat("#,##0.#####", symbols);
+        String textToShow = formatter.format(result);
 
         showsResult = true;
         currentResult = result;
@@ -277,6 +286,12 @@ public class ControlFormula {
         mainWindow.clearAll();
         mainWindow.renderResult(textToShow);
         renderAll();
+    }
+
+    public void calculateFraction() {
+        FractionConverter fractionConverter = new FractionConverter();
+        double[] fraction = fractionConverter.convertToFraction(currentResult);
+        mainWindow.renderFractionResult(fraction);
     }
 
     private void reconnectParentFields(Field field) {
@@ -347,11 +362,21 @@ public class ControlFormula {
         currentField = startField;
         mainWindow.clearAll();
         renderAll();
+        newCalculation = true;
     }
 
     public void deleteCurrent() {
-        currentField.getContent().remove(cursorPosition - 1);
-        decrementCursorPosition();
+        if (currentField.getLength() == 1 && currentField.getParent() != null) {
+            Field previousField = currentField;
+            currentField = currentField.getParent().getParentField();
+            int index = currentField.getIndexOf(previousField.getParent());
+            currentField.getContent().remove(index);
+            cursorPosition = index;
+        } else if (currentField.getContent().size() > 1) {
+            currentField.getContent().remove(cursorPosition - 1);
+            decrementCursorPosition();
+        }
         renderAll();
+        newCalculation = true;
     }
 }

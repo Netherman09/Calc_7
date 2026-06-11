@@ -8,6 +8,8 @@ public class ControlButtons {
     MainWindow mainWindow;
     ControlFormula controlFormula;
 
+    private boolean isShowingFraction;
+
     double[] position;
     double[] dragStartPosition;
     double[] dragWindowStartPosition;
@@ -71,7 +73,17 @@ public class ControlButtons {
                                                                 else controlFormula.addOperator(Constants.Type.Factorial);});
         mainWindow.lnButton.setOnAction(event -> controlFormula.addOperator(Constants.Type.Ln));
 
-        mainWindow.calculateButton.setOnAction(event -> controlFormula.calculate());
+        mainWindow.calculateButton.setOnAction(event -> {
+            if (controlFormula.newCalculation || isShowingFraction) {
+                controlFormula.calculate();
+                isShowingFraction = false;
+                controlFormula.newCalculation = false;
+            }
+            else if (!isShowingFraction) {
+                controlFormula.calculateFraction();
+                isShowingFraction = true;
+            }
+        });
 
         mainWindow.ansButton.setOnAction(event -> controlFormula.addVariable("Ans", Constants.VarType.Ans));
         mainWindow.varButton.setOnAction(event -> controlFormula.storeCustomVar("Var", Constants.VarType.CustomVar));

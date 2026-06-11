@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import nodes.FractionNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -304,6 +305,10 @@ public class MainWindow extends Application {
         resultBox.getChildren().clear();
     }
 
+    public void clearResult() {
+        resultBox.getChildren().clear();
+    }
+
     public void renderResult(String result) {
         Text text = new Text(result);
         text.getStyleClass().add("calculation_result");
@@ -314,6 +319,28 @@ public class MainWindow extends Application {
 
         HBox.setHgrow(resultWrapper, Priority.ALWAYS);
 
+        clearResult();
+        resultBox.getChildren().add(resultWrapper);
+    }
+
+    public void renderFractionResult(double[] result) {
+        Text nominatorText =  new Text(String.valueOf((int)result[0]));
+        Text denominatorText =  new Text(String.valueOf((int)result[1]));
+
+        nominatorText.getStyleClass().add("calculation_result");
+        denominatorText.getStyleClass().add("calculation_result");
+
+        javafx.scene.shape.Line line = new javafx.scene.shape.Line(0, 0, 30, 0);
+        line.setStroke(Color.WHITE);
+
+        VBox resultWrapper = new VBox(nominatorText, line, denominatorText);
+
+        resultWrapper.setAlignment(Pos.BOTTOM_RIGHT);
+        resultWrapper.setPadding(new  Insets(0, 0, -6, 0));
+
+        HBox.setHgrow(resultWrapper, Priority.ALWAYS);
+
+        clearResult();
         resultBox.getChildren().add(resultWrapper);
     }
 
