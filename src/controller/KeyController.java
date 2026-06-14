@@ -7,18 +7,25 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
+
 public class KeyController {
     boolean isPressingShift = false;
     boolean isPressingControl = false;
+
+    ArrayList<KeyCode> lastKeys = new ArrayList<>();
+
     public KeyController(Scene scene, MainWindow mainWindow, ControlFormula controlFormula) {
         scene.setOnKeyPressed(keyEvent -> {
             System.out.println("KeyPressed " + keyEvent.getCode().toString());
+            lastKeys.add(keyEvent.getCode());
             switch (keyEvent.getCode()) {
                 case DIGIT0:
                     controlFormula.addNumber(0);
                     break;
                 case DIGIT1:
-                    controlFormula.addNumber(1);
+                    if (!isPressingShift) controlFormula.addNumber(1);
+                    else controlFormula.addOperator(Constants.Type.Factorial);
                     break;
                 case DIGIT2:
                     controlFormula.addNumber(2);
@@ -79,6 +86,62 @@ public class KeyController {
                 case CONTROL:
                     isPressingControl = true;
                     break;
+                case DEAD_CIRCUMFLEX:
+                    controlFormula.addOperator(Constants.Type.Exponent);
+                    break;
+            }
+
+            if (lastKeys.size() > 6) lastKeys.removeFirst();
+
+            // ln
+            if (lastKeys.size() >= 2 && lastKeys.get(lastKeys.size() - 2) == KeyCode.L && lastKeys.getLast() == KeyCode.N) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.Ln);
+            }
+            // logarithm
+            if (lastKeys.size() >= 3 && lastKeys.get(lastKeys.size() - 3) == KeyCode.L && lastKeys.get(lastKeys.size() - 2) == KeyCode.O && lastKeys.getLast() == KeyCode.G) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.Logaritm);
+            }
+            // arcsine
+            if (lastKeys.size() >= 4 && lastKeys.get(lastKeys.size() - 4) == KeyCode.A && lastKeys.get(lastKeys.size() - 3) == KeyCode.S && lastKeys.get(lastKeys.size() - 2) == KeyCode.I && lastKeys.getLast() == KeyCode.N) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.ArcSine);
+            }
+            // cosine
+            if (lastKeys.size() >= 4 && lastKeys.get(lastKeys.size() - 4) == KeyCode.A && lastKeys.get(lastKeys.size() - 3) == KeyCode.C && lastKeys.get(lastKeys.size() - 2) == KeyCode.O && lastKeys.getLast() == KeyCode.S) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.ArcCosine);
+            }
+            // tangent
+            if (lastKeys.size() >= 4 && lastKeys.get(lastKeys.size() - 4) == KeyCode.A && lastKeys.get(lastKeys.size() - 3) == KeyCode.T && lastKeys.get(lastKeys.size() - 2) == KeyCode.A && lastKeys.getLast() == KeyCode.N) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.ArcTangent);
+            }
+            // sine
+            if (lastKeys.size() >= 3 && lastKeys.get(lastKeys.size() - 3) == KeyCode.S && lastKeys.get(lastKeys.size() - 2) == KeyCode.I && lastKeys.getLast() == KeyCode.N) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.Sine);
+            }
+            // cosine
+            if (lastKeys.size() >= 3 && lastKeys.get(lastKeys.size() - 3) == KeyCode.C && lastKeys.get(lastKeys.size() - 2) == KeyCode.O && lastKeys.getLast() == KeyCode.S) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.Cosine);
+            }
+            // tangent
+            if (lastKeys.size() >= 3 && lastKeys.get(lastKeys.size() - 3) == KeyCode.T && lastKeys.get(lastKeys.size() - 2) == KeyCode.A && lastKeys.getLast() == KeyCode.N) {
+                lastKeys.clear();
+                controlFormula.addOperator(Constants.Type.Tangent);
+            }
+            // pi
+            if (lastKeys.size() >= 2 && lastKeys.get(lastKeys.size() - 2) == KeyCode.P && lastKeys.getLast() == KeyCode.I) {
+                lastKeys.clear();
+                controlFormula.addConstant(Math.PI, "𝝅");
+            }
+            // e
+            if (lastKeys.size() >= 1 && lastKeys.getLast() == KeyCode.E) {
+                lastKeys.clear();
+                controlFormula.addConstant(Math.E, "e");
             }
         });
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
